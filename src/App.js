@@ -71,7 +71,6 @@ class App extends Component {
         </div>
         <div className='grid'>
           <Grid>
-
             <Grid.Column width={3}>
               <LeftSideBar
                 activeSection={this.state.currentSection}

@@ -16,6 +16,7 @@ export default class EmailList extends React.Component {
       <div>
         {this.props.emails.map(email => {
           return (
+            <div className='maillist'>
             <Segment>
               <EmailListItem
                 onEmailClicked={id => this.props.onEmailSelected(id)}
@@ -23,6 +24,7 @@ export default class EmailList extends React.Component {
                 selected={this.props.selectedEmailId === email.id}
               />
             </Segment>
+            </div>
           );
         })}
       </div>

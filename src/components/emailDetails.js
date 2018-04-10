@@ -27,6 +27,7 @@ export default class EmailDetails extends React.Component {
     const date = `${getPrettyDate(this.props.email.time)} · ${getPrettyTime(this.props.email.time)}`;
 
     return (
+      <div className='maildetail'>
       <Segment>
         <Header textAlign='left'>
           <Header.Content>
@@ -45,6 +46,7 @@ export default class EmailDetails extends React.Component {
           {this.props.email.message}
         </Message>
       </Segment>
+      </div>
     );
   }
 
