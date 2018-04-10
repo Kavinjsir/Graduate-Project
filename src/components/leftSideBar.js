@@ -21,9 +21,10 @@ export default class LeftSideBar extends React.Component {
   render() {
     return (
       <div className='sidebar'>
+        <br />
         <div className='header'>
-          <Button circular size='mini' content='收信' icon='mail' fluid basic inverted color='orange' />
-          <Button circular size='mini' content='写信' icon='mail forward' fluid basic inverted color='orange' />
+          <Button circular size='mini' content='收信' icon='mail' basic inverted color='orange' />
+          <Button circular size='mini' content='写信' icon='mail forward' basic inverted color='orange' />
         </div>
         <Divider fitted />
         <List animated verticalAlign='middle'>

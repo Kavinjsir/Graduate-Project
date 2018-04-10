@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Button, Header, Divider, Message } from 'semantic-ui-react';
+import { Segment, Button, Header, Divider } from 'semantic-ui-react';
 import { getPrettyDate, getPrettyTime } from '../utils/date';
 
 export default class EmailDetails extends React.Component {
@@ -28,24 +28,24 @@ export default class EmailDetails extends React.Component {
 
     return (
       <div className='maildetail'>
-      <Segment>
-        <Header textAlign='left'>
-          <Header.Content>
-            <strong>
-              {this.props.email.subject}
-            </strong>
-            <Divider fitted />
-            <Header.Subheader>
-              发件人：{this.props.email.from}
-              <br />
-              时间：{date}
-            </Header.Subheader>
-          </Header.Content>
-        </Header>
-        <Message>
+        <Segment>
+          <Header textAlign='left'>
+            <Header.Content>
+              <strong>
+                {this.props.email.subject}
+              </strong>
+              <Divider fitted />
+              <Header.Subheader>
+                发件人：{this.props.email.from}
+                <br />
+                时间：{date}
+              </Header.Subheader>
+            </Header.Content>
+          </Header>
+          <Divider fitted />
+          <br />
           {this.props.email.message}
-        </Message>
-      </Segment>
+        </Segment>
       </div>
     );
   }
