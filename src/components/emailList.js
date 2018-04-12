@@ -17,7 +17,7 @@ export default class EmailList extends React.Component {
         {this.props.emails.map(email => {
           return (
             <div className='maillist'>
-            <Segment>
+            <Segment vertical padded='very'>
               <EmailListItem
                 onEmailClicked={id => this.props.onEmailSelected(id)}
                 email={email}

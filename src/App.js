@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Menu } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 import { fetchList, setRead, setDelete } from './reduce/action';
 import LeftSideBar from './components/leftSideBar';
@@ -59,15 +59,9 @@ class App extends Component {
     return (
       <div>
         <div className='title'>
-          <Menu stackable inverted color='rgb(27, 28, 29)'>
-            <Menu.Item name='邮件监管系统' fitted='vertically' >
-              <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' />
-              <p>邮件监管系统</p>
-            </Menu.Item>
-            <Menu.Menu position='right'>
-              <Menu.Item name='登出' />
-            </Menu.Menu>
-          </Menu>
+          <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' />
+          <div className='proname'>邮件监管系统</div>
+          {/* <div className='logout'>登出</div> */}
         </div>
         <div className='grid'>
           <Grid>
