@@ -1,7 +1,12 @@
 import React from 'react';
-import { Button, List } from 'semantic-ui-react';
+import { Button, List, Modal } from 'semantic-ui-react';
 
 export default class LeftSideBar extends React.Component {
+
+  state = { open: false }
+  open = () => this.setState({ open: true });
+  close = () => this.setState({ open: false });
+
   getUnReadCount = () => {
     return this.props.emails.reduce(
       (previous, msg) => {
@@ -19,16 +24,17 @@ export default class LeftSideBar extends React.Component {
   }
 
   render() {
+    const { open } = this.state
     return (
       <div className='sidebar'>
         <div className='header'>
-          {/* <Button circular size='mini' content='收信' icon='mail' basic inverted color='orange' />
-          <Button circular size='mini' content='写信' icon='mail forward' basic inverted color='orange' /> */}
+          {/* <Button className='receive' fluid content='收信' icon='mail' basic inverted color='orange' />
+          <Button className='write' fluid content='写信' icon='mail forward' basic inverted color='orange' /> */}
           <div className='receive' onClick={() => alert('building...')}>
             收信
           </div>
           <div className='fengexian'>|</div>
-          <div className='write' onClick={() => alert('building...')}>
+          <div className='write' onClick={() => this.open()}>
             写信
           </div>
         </div>
@@ -64,6 +70,10 @@ export default class LeftSideBar extends React.Component {
             </List.Content>
           </List.Item>
         </List>
+        <Modal basic size='fullscreen' open={open} onClose={this.close}>
+          <Modal.Header>Writing...</Modal.Header>
+          <Modal.Content><p>Filling in content of your mail...</p></Modal.Content>
+        </Modal>
       </div>
     );
   }
