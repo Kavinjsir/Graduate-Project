@@ -27,6 +27,7 @@ export default class LeftSideBar extends React.Component {
           <div className='receive' onClick={() => alert('building...')}>
             收信
           </div>
+          <div className='fengexian'>|</div>
           <div className='write' onClick={() => alert('building...')}>
             写信
           </div>

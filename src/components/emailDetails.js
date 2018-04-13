@@ -31,9 +31,9 @@ export default class EmailDetails extends React.Component {
         <Segment>
           <Header textAlign='left'>
             <Header.Content>
-              <strong>
+              <div className='contenthead'>
                 {this.props.email.subject}
-              </strong>
+              </div>
               <Divider fitted />
               <Header.Subheader>
                 发件人：{this.props.email.from}
@@ -44,7 +44,9 @@ export default class EmailDetails extends React.Component {
           </Header>
           <Divider fitted />
           <br />
+          <div className='realcontent'>
           {this.props.email.message}
+          </div>
         </Segment>
       </div>
     );

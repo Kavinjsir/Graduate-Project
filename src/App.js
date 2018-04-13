@@ -7,7 +7,8 @@ import LeftSideBar from './components/leftSideBar';
 import EmailList from './components/emailList';
 import EmailDetails from './components/emailDetails';
 // import Chart from './components/visualize';
-import './App.css';
+// import './App.css';
+import './Unify.css';
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');

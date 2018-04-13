@@ -6,7 +6,7 @@ export const getPrettyDate = date => {
   ];
   date = date.split(' ')[0];
   const newDate = date.split('-');
-  const month = months[0];
+  const month = months[parseInt(newDate[1], 10) - 1];
   return `${month} ${newDate[2]}, ${newDate[0]}`;
 };
 
