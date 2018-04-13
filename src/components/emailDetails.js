@@ -19,7 +19,7 @@ export default class EmailDetails extends React.Component {
     if (!this.props.email) {
       return (
         <div>
-          Please select a mail.
+          请选择邮件。
         </div>
       );
     }

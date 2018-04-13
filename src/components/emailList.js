@@ -7,7 +7,7 @@ export default class EmailList extends React.Component {
     if (!this.props.emails || this.props.emails.length === 0) {
       return (
         <Segment>
-          <p>Nothing to see here.</p>
+          <p>没有相关类型的邮件。</p>
         </Segment>
       );
     }

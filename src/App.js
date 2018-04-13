@@ -20,10 +20,10 @@ class App extends Component {
       selectedEmailId: 0,
       currentSection: 'inbox',
     };
-  } k
+  }
 
   async componentWillMount() {
-    const response = await fetch('http://127.0.0.1:6066/inbox');
+    const response = await fetch('http://127.0.0.1:5555/inbox');
     const result = await response.json();
     this.props.dispatch(fetchList(result));
   }
