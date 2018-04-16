@@ -42,6 +42,11 @@ async function sendMail(ctx) {
     pass
   };
   const { subject, text } = ctx.request.body;
+  if (!subject || !text) {
+    ctx.status = 400;
+    ctx.body = 'wrong data';
+    return;
+  }
   // ignore type check temporary
   const message = { subject, text };
   const result = await send(account, message);

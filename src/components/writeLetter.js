@@ -1,6 +1,9 @@
 import React from 'react';
 import { Input, Grid, Modal, Button } from 'semantic-ui-react';
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 export default class WriteLetter extends React.Component {
   addressInput;
   subjectInput;
@@ -8,8 +11,25 @@ export default class WriteLetter extends React.Component {
 
   close = () => this.props.onClose();
 
-  handleSubmit = () => {
-      console.log(this.addressInput, this.subjectInput, this.contentInput);
+  handleSubmit = async () => {
+    console.log(typeof this.contentInput, this.addressInput, this.subjectInput, this.contentInput);
+
+    try {
+      const response = await fetch('http://localhost:5555/sent', {
+        method: 'POST',
+        body: JSON.stringify({
+          subject: this.subjectInput,
+          text: this.contentInput,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
