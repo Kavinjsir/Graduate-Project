@@ -5,13 +5,13 @@ An email client for phishing detection and sensitive words filtering.
 ### steps
 1. nodejs + js + prettier/eslint ✓
 2. receive mail: node-imap ✓
-3. send mail: nodemailer
+3. send mail: nodemailer ✓
 3. react + webpack ✓
 4. electron ✓
 ### target
 1. Receiving emails ✓
-2. Send emails
+2. Send emails ✓
 3. A server based on Koa for sending/receiving emails
-   (With Restful api available)
+   (With Restful api available) ✓
 4. PostgreSQL for mails local storage ✓
 5. Change view style through Semantic UI ✓
