@@ -8,10 +8,10 @@ export default class EmailListItem extends React.Component {
       <div className='listitem' onClick={() => this.props.onEmailClicked(this.props.email.id)}>
         <div data-read={this.props.email.read} />
         <Button basic inverted color='orange' as={Container}>
-        <div className='itemdetail'>
-          <p className='detailtitle'>{this.props.email.subject}</p>
-          <p>{this.props.email.from}  {getPrettyDate(this.props.email.time)}</p>
-        </div>
+          <div className='itemdetail'>
+            <p className='detailtitle'>{this.props.email.subject}</p>
+            <p>{this.props.email.from}  {getPrettyDate(this.props.email.time)}</p>
+          </div>
         </Button>
       </div>
     );

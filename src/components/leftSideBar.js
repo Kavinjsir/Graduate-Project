@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, List, Modal } from 'semantic-ui-react';
+import { Button, List } from 'semantic-ui-react';
+
+import WriteLetter from './writeLetter';
 
 export default class LeftSideBar extends React.Component {
 
@@ -46,7 +48,7 @@ export default class LeftSideBar extends React.Component {
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
             <List.Content>
-              <Button size='medium' content='发件箱' icon='send' basic  />
+              <Button size='medium' content='发件箱' icon='send' basic />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('deleted'); }}>
@@ -70,10 +72,7 @@ export default class LeftSideBar extends React.Component {
             </List.Content>
           </List.Item>
         </List>
-        <Modal basic size='fullscreen' open={open} onClose={this.close}>
-          <Modal.Header>Writing...</Modal.Header>
-          <Modal.Content><p>Filling in content of your mail...</p></Modal.Content>
-        </Modal>
+        <WriteLetter open={open} onClose={this.close} />
       </div>
     );
   }
