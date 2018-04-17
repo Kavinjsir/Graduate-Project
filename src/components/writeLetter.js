@@ -18,6 +18,7 @@ export default class WriteLetter extends React.Component {
       const response = await fetch('http://localhost:5555/sent', {
         method: 'POST',
         body: JSON.stringify({
+          to: this.addressInput,
           subject: this.subjectInput,
           text: this.contentInput,
         }),

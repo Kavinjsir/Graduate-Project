@@ -41,14 +41,14 @@ async function sendMail(ctx) {
     user,
     pass
   };
-  const { subject, text } = ctx.request.body;
-  if (!subject || !text) {
+  const { to, subject, text } = ctx.request.body;
+  if (!to || !subject || !text) {
     ctx.status = 400;
     ctx.body = 'wrong data';
     return;
   }
   // ignore type check temporary
-  const message = { subject, text };
+  const message = { to, subject, text };
   const result = await send(account, message);
   if (!result) {
     ctx.body = 'bad request';

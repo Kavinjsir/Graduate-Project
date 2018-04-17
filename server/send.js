@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 module.exports = (account, message) => {
   const {host, user, pass } = account;
-  const { subject, text } = message;
+  const { to, subject, text } = message;
   // nodemailer initialization
   const transporter = nodemailer.createTransport({
     host,
@@ -15,7 +15,7 @@ module.exports = (account, message) => {
 
   const mailOptions = {
     from: '"Tony King 👻" <1963465249@qq.com>',
-    to: 'tonyking_jty@126.com',
+    to,
     subject,
     text,
     html: '<p>' + text + '</p>'
