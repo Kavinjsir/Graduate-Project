@@ -15,3 +15,9 @@ An email client for phishing detection and sensitive words filtering.
    (With Restful api available) ✓
 4. PostgreSQL for mails local storage ✓
 5. Change view style through Semantic UI ✓
+
+## Phase 2: Login/out
+### steps
+### target
+1. A welcome page for login
+2. A button for log out
