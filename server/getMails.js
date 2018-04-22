@@ -6,7 +6,8 @@ const cts = fs.readFileSync(path.join(__dirname, 'db.json'));
 const dbInfo = JSON.parse(cts.toString());
 
 // DB initialization
-const DB = pgp()(dbInfo.url);
+// const DB = pgp()(dbInfo.url);
+const DB = require('./dbconnect');
 
 module.exports= () => {
   return DB.many('SELECT * FROM mail');

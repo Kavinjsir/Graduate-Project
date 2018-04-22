@@ -15,6 +15,10 @@ export default class EmailDetails extends React.Component {
     return undefined;
   }
 
+  createMarkup = () => {
+    return {__html: this.props.email.message}
+  }
+
   render() {
     if (!this.props.email) {
       return (
@@ -44,8 +48,8 @@ export default class EmailDetails extends React.Component {
           </Header>
           <Divider fitted />
           <br />
-          <div className='realcontent'>
-          {this.props.email.message}
+          <div dangerouslySetInnerHTML={this.createMarkup()} className='realcontent'>
+          {/* {this.props.email.message} */}
           </div>
         </Segment>
       </div>

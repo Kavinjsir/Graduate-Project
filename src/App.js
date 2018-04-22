@@ -28,6 +28,12 @@ class App extends Component {
     this.props.dispatch(fetchList(result));
   }
 
+  updateInbox = async () => {
+    const response = await fetch('http://127.0.0.1:5555/inbox');
+    const result = await response.json();
+    this.props.dispatch(fetchList(result));
+  }
+
   openEmail = id => {
     this.props.dispatch(setRead(id));
     this.setState({
@@ -71,9 +77,10 @@ class App extends Component {
                 activeSection={this.state.currentSection}
                 emails={this.props.emails}
                 setSidebarSection={section => this.setSidebarSection(section)}
+                onUpdate={this.updateInbox}
               />
             </Grid.Column>
-            <Grid.Column width={5}>
+            <Grid.Column width={4}>
               <EmailList
                 emails={this.props.emails.filter(x => x.tag === this.state.currentSection)}
                 onEmailSelected={id => this.openEmail(id)}
@@ -81,7 +88,7 @@ class App extends Component {
                 currentSection={this.state.currentSection}
               />
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column width={9}>
               <EmailDetails
                 email={currentEmail}
                 onDelete={id => this.deleteMessage(id)}

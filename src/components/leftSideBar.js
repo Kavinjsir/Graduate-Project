@@ -8,6 +8,7 @@ export default class LeftSideBar extends React.Component {
   state = { open: false }
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
+  update = () => this.props.onUpdate();
 
   getUnReadCount = () => {
     return this.props.emails.reduce(
@@ -32,7 +33,7 @@ export default class LeftSideBar extends React.Component {
         <div className='header'>
           {/* <Button className='receive' fluid content='收信' icon='mail' basic inverted color='orange' />
           <Button className='write' fluid content='写信' icon='mail forward' basic inverted color='orange' /> */}
-          <div className='receive' onClick={() => alert('building...')}>
+          <div className='receive' onClick={() => this.update()}>
             收信
           </div>
           <div className='fengexian'>|</div>
@@ -43,7 +44,7 @@ export default class LeftSideBar extends React.Component {
         <List animated >
           <List.Item onClick={() => { this.props.setSidebarSection('inbox'); }}>
             <List.Content>
-              <Button size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? { size: 'mini', basic: 'true', content: this.getUnReadCount() ? this.getUnReadCount() : null } : null} />
+              <Button size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? this.getUnReadCount() : null} />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
