@@ -28,7 +28,6 @@ An email client for phishing detection and sensitive words filtering.
 5. Another api for fetching data from DB, usually for frontend when it has login and want to fetch all mails.
 6. A logout api: when user logout, the data in DB should be deleted.
 7. Now we don't care the data consistency, we just fetch mails from 3rd server and do filering and display the result to users.
-
 ### target
 1. A welcome page for login
 2. A button for log out
