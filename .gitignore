@@ -2,6 +2,7 @@
 
 # personal info
 /server/account.json
+/server/acct.json
 
 # dependencies
 /node_modules
