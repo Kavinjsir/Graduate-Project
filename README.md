@@ -19,10 +19,10 @@ An email client for phishing detection and sensitive words filtering.
 ## Phase 2: Login/out
 ### steps
 1. Server Refactor: redefine api and func for login, fetch, send, logout
-2. A new page at frontend for welcome and login.
-   User input his/her necessary mail info.
+2. A new page at frontend for welcome and login.  
+   User input his/her necessary mail info.  
    The frontend then transport it to the server side.
-3. A restful api for receiving login info.
+3. A restful api for receiving login info.  
    Server side should connect to the related mail server to fetch mails and store them in DB.
 4. By the time server fetching mails from 3rd mail server, it should also send the received mails to trainging model system to do classification.
 5. Another api for fetching data from DB, usually for frontend when it has login and want to fetch all mails.
