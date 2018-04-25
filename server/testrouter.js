@@ -143,49 +143,67 @@ async function fecthMails(ctx) {
   try {
     const result = await fetchMails();
     let mailList = [];
-    // for (const mail of result) {
-    //   mailList = [
-    //     ...mailList,
-    //     {
-    //       from: mail.mailfrom,
-    //       address: mail.address,
-    //       time: mail.sendtime,
-    //       // message: mail.message,
-    //       message: mail.html,
-    //       subject: mail.subject,
-    //       tag: mail.mailtag,
-    //       read: mail.read.toString(),
-    //     }
-    //   ];
-    // }
     for (const mail of result) {
       if (mail.message != null) {
         mailList = [
           ...mailList,
           {
-            id: mail.id,
-            content: mail.message,
+            from: mail.mailfrom,
+            address: mail.address,
+            time: mail.sendtime,
+            // message: mail.message,
+            message: mail.html,
+            subject: mail.subject,
+            tag: mail.mailtag,
+            read: mail.read.toString(),
+          }
+        ];
+      } else {
+        mailList = [
+          ...mailList,
+          {
+            from: mail.mailfrom,
+            address: mail.address,
+            time: mail.sendtime,
+            // message: mail.message,
+            message: mail.html,
+            subject: mail.subject,
+            tag: 'spam',
+            read: mail.read.toString(),
           }
         ];
       }
+
     }
-    console.log(mailList);
-    fs.writeFileSync(path.join(__dirname, 'test.json'), JSON.stringify(mailList));
-    try {
-      const response = await fetch('http://202.120.40.69:12346/sendjson', {
-        method: 'POST',
-        body: JSON.stringify(mailList),
-        // body: fs.readFileSync(path.join(__dirname, 'test.json')),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        })
-      });
-      const result = await response.json();
-      console.log(result);
-      mailList = [...mailList, result];
-    } catch (error) {
-      console.log(error);
-    }
+
+    // for (const mail of result) {
+    //   if (mail.message != null) {
+    //     mailList = [
+    //       ...mailList,
+    //       {
+    //         id: mail.id,
+    //         content: mail.message,
+    //       }
+    //     ];
+    //   }
+    // }
+    // console.log(mailList);
+    // fs.writeFileSync(path.join(__dirname, 'test.json'), JSON.stringify(mailList));
+    // try {
+    //   const response = await fetch('http://202.120.40.69:12346/sendjson', {
+    //     method: 'POST',
+    //     body: JSON.stringify(mailList),
+    //     // body: fs.readFileSync(path.join(__dirname, 'test.json')),
+    //     headers: new Headers({
+    //       'Content-Type': 'application/json'
+    //     })
+    //   });
+    //   const result = await response.json();
+    //   console.log(result);
+    //   mailList = [...mailList, result];
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     ctx.body = mailList;
     ctx.status = 200;
