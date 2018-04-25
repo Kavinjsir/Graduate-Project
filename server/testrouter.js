@@ -5,12 +5,20 @@ const path = require('path');
 const Imap = require('imap');
 const simpleParser = require('mailparser').simpleParser;
 const send = require('./send');
-const fetch = require('./getMails');
+const fetchMails = require('./getMails');
 const DB = require('./dbconnect');
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 async function getAccountMails(ctx) {
-  const { sendHost, receiveHost, user, pwd } = ctx.request.body;
-  
+  const {
+    sendHost,
+    receiveHost,
+    user,
+    pwd
+  } = ctx.request.body;
+
   // If invalid, return false
   if (!sendHost || !receiveHost || !user || !pwd) {
     ctx.body = 'Wrong account info';
@@ -39,7 +47,10 @@ async function getAccountMails(ctx) {
       imap.search(['UNSEEN'], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
-          const f = imap.fetch(results, { bodies: '', markSeen: true });
+          const f = imap.fetch(results, {
+            bodies: '',
+            markSeen: true
+          });
           f.on('message', (msg, seqno) => {
             msg.on('body', async (stream, info) => {
               const result = await simpleParser(stream);
@@ -71,7 +82,10 @@ async function getAccountMails(ctx) {
       imap.search(['SEEN'], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
-          const f = imap.fetch(results, { bodies: '', markSeen: true });
+          const f = imap.fetch(results, {
+            bodies: '',
+            markSeen: true
+          });
           f.on('message', (msg, seqno) => {
             msg.on('body', async (stream, info) => {
               const result = await simpleParser(stream);
@@ -115,14 +129,19 @@ async function getAccountMails(ctx) {
   await imap.connect();
 
   // Store Account Info (for later use)
-  const account = { sendHost, receiveHost, user, pwd };
+  const account = {
+    sendHost,
+    receiveHost,
+    user,
+    pwd
+  };
   fs.writeFileSync(path.join(__dirname, 'acct.json'), JSON.stringify(account));
 }
 
 async function fecthMails(ctx) {
   // fetch from db
   try {
-    const result = await fetch();
+    const result = await fetchMails();
     let mailList = [];
     // for (const mail of result) {
     //   mailList = [
@@ -140,6 +159,7 @@ async function fecthMails(ctx) {
     //   ];
     // }
     for (const mail of result) {
+      if (mail.message != null) {
         mailList = [
           ...mailList,
           {
@@ -148,6 +168,25 @@ async function fecthMails(ctx) {
           }
         ];
       }
+    }
+    console.log(mailList);
+    fs.writeFileSync(path.join(__dirname, 'test.json'), JSON.stringify(mailList));
+    try {
+      const response = await fetch('http://202.120.40.69:12346/sendjson', {
+        method: 'POST',
+        body: JSON.stringify(mailList),
+        // body: fs.readFileSync(path.join(__dirname, 'test.json')),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      });
+      const result = await response.json();
+      console.log(result);
+      mailList = [...mailList, result];
+    } catch (error) {
+      console.log(error);
+    }
+
     ctx.body = mailList;
     ctx.status = 200;
   } catch (error) {
@@ -164,14 +203,22 @@ async function sendMail(ctx) {
     user: accountInfo.user,
     pass: accountInfo.pwd
   };
-  const { to, subject, text } = ctx.request.body;
+  const {
+    to,
+    subject,
+    text
+  } = ctx.request.body;
   if (!to || !subject || !text) {
     ctx.status = 400;
     ctx.body = 'wrong data';
     return;
   }
   // ignore type check temporary
-  const message = { to, subject, text };
+  const message = {
+    to,
+    subject,
+    text
+  };
   const result = await send(account, message);
   if (!result) {
     ctx.body = 'bad request';
@@ -184,7 +231,9 @@ async function sendMail(ctx) {
 }
 
 async function logOut(ctx) {
-  const { address } = ctx.request.body;
+  const {
+    address
+  } = ctx.request.body;
   if (address == null) {
     ctx.body = 'Invalid value.';
     ctx.status = 200;
