@@ -41,35 +41,36 @@ export default class LeftSideBar extends React.Component {
             写信
           </div>
         </div>
-        <List animated >
+        {/* <List animated > */}
+        <List>
           <List.Item onClick={() => { this.props.setSidebarSection('inbox'); }}>
             <List.Content>
-              <Button size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? this.getUnReadCount() : null} />
+              <Button circular fluid size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? this.getUnReadCount() : null} />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
             <List.Content>
-              <Button size='medium' content='发件箱' icon='send' basic />
+              <Button circular fluid size='medium' content='发件箱' icon='send' basic />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('deleted'); }}>
             <List.Content>
-              <Button size='medium' content='已删除' icon='trash' basic />
+              <Button circular fluid size='medium' content='已删除' icon='trash' basic />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('spam'); }}>
             <List.Content>
-              <Button size='medium' content='垃圾邮件' icon='remove' basic />
+              <Button circular fluid size='medium' content='垃圾邮件' icon='remove' basic />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('secret'); }}>
             <List.Content>
-              <Button size='medium' content='涉密邮件' icon='protect' basic />
+              <Button circular fluid size='medium' content='涉密邮件' icon='protect' basic />
             </List.Content>
           </List.Item>
           <List.Item onClick={() => { this.props.setSidebarSection('sensitive'); }}>
             <List.Content>
-              <Button size='medium' content='敏感邮件' icon='hide' basic />
+              <Button circular fluid size='medium' content='敏感邮件' icon='hide' basic />
             </List.Content>
           </List.Item>
         </List>

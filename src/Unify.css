@@ -9,7 +9,7 @@
 }
 
 .title img {
-  width: 50px;
+  width: 114px;
   height: 50px;
 }
 
@@ -32,6 +32,7 @@
 }
 
 .grid {
+  /* background-image: url('http://oyy735z2r.bkt.clouddn.com/bg.jpg'); */
   background: rgb(243, 245, 246);
 }
 
@@ -42,6 +43,7 @@
   position: sticky;
   /* background: rgb(194, 209, 222); */
   border-right: ridge 2px;
+  border-right-color: #FF8500;
 }
 
 .sidebar > .header {

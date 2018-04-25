@@ -66,8 +66,9 @@ class App extends Component {
     return (
       <div>
         <div className='title'>
-          <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' />
-          <div className='proname'>邮件监管系统</div>
+          {/* <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' /> */}
+          <img alt='logo' src='http://oyy735z2r.bkt.clouddn.com/logo1.png' />
+          {/* <div className='proname'>邮件监管系统</div> */}
           {/* <div className='logout'>登出</div> */}
         </div>
         <div className='grid'>
