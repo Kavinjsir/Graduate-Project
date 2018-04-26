@@ -2,53 +2,64 @@ const KoaRouter = require('koa-router');
 const pgp = require('pg-promise');
 const fs = require('fs');
 const path = require('path');
-
 const Imap = require('imap');
 const simpleParser = require('mailparser').simpleParser;
-
 const send = require('./send');
-const fetch = require('./getMails');
-// const fetchNewMails = require('./receiveNewMails');
-
-// DB connect
+const fetchMails = require('./getMails');
 const DB = require('./dbconnect');
 
-// Get Account Info
-const cts = fs.readFileSync(path.join(__dirname, 'account.json'));
-const account = JSON.parse(cts.toString());
-const sendHost = 'smtp.qq.com';
-const receiveHost = 'imap.qq.com';
-const user = account.user;
-const pass = account.pwd;
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
-async function fecthMails(ctx) {
-  // await fetchNewMails.connect();
+async function getAccountMails(ctx) {
+  const {
+    sendHost,
+    receiveHost,
+    user,
+    pwd
+  } = ctx.request.body;
+
+  // If invalid, return false
+  if (!sendHost || !receiveHost || !user || !pwd) {
+    ctx.body = 'Wrong account info';
+    ctx.status = 400;
+  }
+
+  // fetch account mails from the 3rd mail server
+  // imap initialization
   const imap = new Imap({
     user,
-    password: pass,
+    password: pwd,
     host: receiveHost,
     port: 993,
     tls: true
   });
-  
+
   const openInbox = callbackFunc => {
     imap.openBox('INBOX', true, callbackFunc);
   }
 
+  // Start...
+  imap.connect();
+
+  // fetch all mails
   imap.once('ready', () => {
     openInbox((err, box) => {
       if (err) throw err;
-      // UNSEEN
-      imap.search(['UNSEEN'], (err, results) => {
+      // ALL
+      imap.search(['ALL'], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
-          const f = imap.fetch(results, { bodies: '', markSeen: true });
+          const f = imap.fetch(results, {
+            bodies: '',
+            markSeen: true
+          });
           f.on('message', (msg, seqno) => {
             msg.on('body', async (stream, info) => {
               const result = await simpleParser(stream);
               const mailInfo = new Object();
               mailInfo.tag = 'inbox';
-              mailInfo.read = false;
+              mailInfo.read = true;
               mailInfo.account = user;
               mailInfo.from = result.from.text.split(' ')[0];
               mailInfo.address = result.from.text.split('<')[1].split('>')[0];
@@ -56,7 +67,6 @@ async function fecthMails(ctx) {
               mailInfo.subject = result.subject;
               mailInfo.message = result.text;
               mailInfo.html = result.html;
-              console.log(mailInfo);
               const res = await DB.one(
                 'INSERT INTO mail VALUES(${account}, ${from}, ${address}, ${time}, ${message}, ${subject}, ${tag}, ${read}, uuid_generate_v4(), ${html}) RETURNING id',
                 mailInfo
@@ -64,9 +74,20 @@ async function fecthMails(ctx) {
             });
             msg.once('end', () => console.log(seqno + 'Finished'));
           });
-          f.once('error', err => console.log('Fetch error:', err));
+          f.once('error', err => {
+            console.log('Fetch error:', err);
+            fs.writeFileSync(path.join(__dirname, 'acct.json'), JSON.stringify({error: err}));
+          });
           f.once('end', () => {
-            console.log('Done fetching all messages.');
+            console.log('Done fetching all seen messages.');
+            // Store Account Info (for later use)
+            const account = {
+              sendHost,
+              receiveHost,
+              user,
+              pwd
+            };
+            fs.writeFileSync(path.join(__dirname, 'acct.json'), JSON.stringify(account));
             imap.end();
           });
         }
@@ -74,50 +95,88 @@ async function fecthMails(ctx) {
     })
   })
 
-  imap.once('error', err => console.log(err, imap.state));
+  imap.once('error', err => {
+    console.log(err, imap.state);
+    ctx.body = err;
+    ctx.status = 400;
+    return;
+  });
+
   imap.once('end', () => {
     console.log(imap.state);
   });
 
-  await imap.connect();
-/////////////////////////////////////
-  // fetch from db
-  const result = await fetch();
-  let mailList = [];
-  for (const mail of result) {
-    mailList = [
-      ...mailList,
-      {
-        from: mail.mailfrom,
-        address: mail.address,
-        time: mail.sendtime,
-        // message: mail.message,
-        message: mail.html,
-        subject: mail.subject,
-        tag: mail.mailtag,
-        read: mail.read.toString(),
-      }
-    ];
-  }
-  ctx.body = mailList;
+  ctx.body = 'Fetching...';
   ctx.status = 200;
-  
+}
+
+async function fecthMails(ctx) {
+  // fetch from db
+  try {
+    const result = await fetchMails();
+    let mailList = [];
+    for (const mail of result) {
+      if (mail.message != null) {
+        mailList = [
+          ...mailList,
+          {
+            from: mail.mailfrom,
+            address: mail.address,
+            time: mail.sendtime,
+            message: mail.html,
+            subject: mail.subject,
+            tag: mail.mailtag,
+            read: mail.read.toString(),
+          }
+        ];
+      } else {
+        mailList = [
+          ...mailList,
+          {
+            from: mail.mailfrom,
+            address: mail.address,
+            time: mail.sendtime,
+            message: mail.html,
+            subject: mail.subject,
+            tag: 'spam',
+            read: mail.read.toString(),
+          }
+        ];
+      }
+    }
+
+    ctx.body = mailList;
+    ctx.status = 200;
+  } catch (error) {
+    ctx.body = error;
+    ctx.status = 400;
+  }
 }
 
 async function sendMail(ctx) {
+  const cts = fs.readFileSync(path.join(__dirname, 'acct.json'));
+  const accountInfo = JSON.parse(cts.toString());
   const account = {
-    host: sendHost,
-    user,
-    pass
+    host: accountInfo.sendHost,
+    user: accountInfo.user,
+    pass: accountInfo.pwd
   };
-  const { to, subject, text } = ctx.request.body;
+  const {
+    to,
+    subject,
+    text
+  } = ctx.request.body;
   if (!to || !subject || !text) {
     ctx.status = 400;
     ctx.body = 'wrong data';
     return;
   }
   // ignore type check temporary
-  const message = { to, subject, text };
+  const message = {
+    to,
+    subject,
+    text
+  };
   const result = await send(account, message);
   if (!result) {
     ctx.body = 'bad request';
@@ -129,9 +188,27 @@ async function sendMail(ctx) {
   }
 }
 
+async function logOut(ctx) {
+  const {
+    address
+  } = ctx.request.body;
+  if (address == null) {
+    ctx.body = 'Invalid value.';
+    ctx.status = 200;
+    return;
+  }
+  // DB operation to delete all related mails when logout.
+  // TODO
+
+  ctx.body = 'done';
+  ctx.status = 200;
+}
+
 const router = new KoaRouter();
 
 router.get('/inbox', fecthMails);
 router.post('/sent', sendMail);
+router.post('/login', getAccountMails);
+router.delete('logout', logOut);
 
 module.exports = router;

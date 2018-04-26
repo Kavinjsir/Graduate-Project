@@ -4,7 +4,7 @@ export function updateState(state = [], action) {
     case 'FETCH':
       const emails = action.emails.sort((a, b) => {
         return (new Date(b.time)) - (new Date(a.time));
-      })
+      });
       let id = 0;
       for (const mail of emails) {
         mail.id = id++;
@@ -16,6 +16,11 @@ export function updateState(state = [], action) {
     case 'DELETE':
       mails.find(x => x.id === action.id).tag = 'deleted';
       return mails;
+    case 'UPDATE':
+      const updatedEmails = action.emails.sort((a, b) => {
+        return (new Date(b.time)) - (new Date(a.time));
+      });
+      return updatedEmails;
     default:
       return state;
   }

@@ -18,3 +18,10 @@ export const setDelete = id => {
     id
   };
 };
+
+export const updateList = emails => {
+  return {
+    type: 'UPDATE',
+    emails
+  };
+};

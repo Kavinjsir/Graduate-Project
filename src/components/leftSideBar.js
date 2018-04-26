@@ -34,12 +34,13 @@ export default class LeftSideBar extends React.Component {
           {/* <Button className='receive' fluid content='收信' icon='mail' basic inverted color='orange' />
           <Button className='write' fluid content='写信' icon='mail forward' basic inverted color='orange' /> */}
           <div className='receive' onClick={() => this.update()}>
-            收信
+            {/* 收信 */}
+            过滤
           </div>
-          <div className='fengexian'>|</div>
+          {/* <div className='fengexian'>|</div>
           <div className='write' onClick={() => this.open()}>
             写信
-          </div>
+          </div> */}
         </div>
         {/* <List animated > */}
         <List>
@@ -48,7 +49,7 @@ export default class LeftSideBar extends React.Component {
               <Button circular fluid size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? this.getUnReadCount() : null} />
             </List.Content>
           </List.Item>
-          <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
+          {/* <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
             <List.Content>
               <Button circular fluid size='medium' content='发件箱' icon='send' basic />
             </List.Content>
@@ -57,7 +58,7 @@ export default class LeftSideBar extends React.Component {
             <List.Content>
               <Button circular fluid size='medium' content='已删除' icon='trash' basic />
             </List.Content>
-          </List.Item>
+          </List.Item> */}
           <List.Item onClick={() => { this.props.setSidebarSection('spam'); }}>
             <List.Content>
               <Button circular fluid size='medium' content='垃圾邮件' icon='remove' basic />
