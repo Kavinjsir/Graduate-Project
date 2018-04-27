@@ -32,28 +32,33 @@ class App extends Component {
     // const response = await fetch('http://127.0.0.1:5555/inbox');
     const mailList = this.props.emails.filter(m => m.tag !== 'spam').map(m => { return {id: m.id.toString(), content: m.message} });
     console.log(mailList);
-    const response = await fetch('http://202.120.40.69:12346/sendjson', {
-      method: 'POST',
-      body: JSON.stringify(mailList),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    });
-    const result = await response.json();
-    console.log(result);
-    let newList = this.props.emails.filter(m => m.tag !== 'spam');
-    for (const r of result) {
-      let idx = newList.find(m => m.id === r.id);
-      if (r.tag === '0') {
-        idx.tag = 'spam';
-      } else if (r.tag === '2') {
-        idx.tag = 'protect';
-      } else {
-        idx.tag = 'inbox';
+    try {
+      const response = await fetch('http://202.120.40.69:12346/sendjson', {
+        method: 'POST',
+        body: JSON.stringify(mailList),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        mode: 'no-cors'
+      });
+      const result = await response.json();
+      console.log(result);
+      let newList = this.props.emails.filter(m => m.tag !== 'spam');
+      for (const r of result) {
+        let idx = newList.find(m => m.id === r.id);
+        if (r.tag === '0') {
+          idx.tag = 'spam';
+        } else if (r.tag === '2') {
+          idx.tag = 'protect';
+        } else {
+          idx.tag = 'inbox';
+        }
+        newList = newList.filter(m => m.id !== r.id).push(idx);
       }
-      newList = newList.filter(m => m.id !== r.id).push(idx);
+      this.props.dispatch(updateList(newList));      
+    } catch (error) {
+      alert('Filter failed:', error);
     }
-    this.props.dispatch(updateList(newList));
   }
 
   openEmail = id => {
