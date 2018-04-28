@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import { fetchList, setRead, setDelete, updateList } from './reduce/action';
 import LeftSideBar from './components/leftSideBar';
 import EmailList from './components/emailList';
 import EmailDetails from './components/emailDetails';
+import HomePage from './components/home';
 // import Chart from './components/visualize';
 // import './App.css';
 import './Unify.css';
@@ -30,7 +32,7 @@ class App extends Component {
 
   updateInbox = async () => {
     // const response = await fetch('http://127.0.0.1:5555/inbox');
-    const mailList = this.props.emails.filter(m => m.tag !== 'spam').map(m => { return {id: m.id.toString(), content: m.message} });
+    const mailList = this.props.emails.filter(m => m.tag !== 'spam').map(m => { return { id: m.id.toString(), content: m.message } });
     console.log(mailList);
     try {
       const response = await fetch('http://202.120.40.69:12346/sendjson', {
@@ -55,7 +57,7 @@ class App extends Component {
         }
         newList = newList.filter(m => m.id !== r.id).push(idx);
       }
-      this.props.dispatch(updateList(newList));      
+      this.props.dispatch(updateList(newList));
     } catch (error) {
       alert('Filter failed:', error);
     }
@@ -88,43 +90,56 @@ class App extends Component {
     });
   }
 
+  // Mail Monitor Component
+  mailMonitorComponent = () => (
+    <Grid>
+      <Grid.Column width={2}>
+        <LeftSideBar
+          activeSection={this.state.currentSection}
+          emails={this.props.emails}
+          setSidebarSection={section => this.setSidebarSection(section)}
+          onUpdate={this.updateInbox}
+        />
+      </Grid.Column>
+      <Grid.Column width={5}>
+        <EmailList
+          emails={this.props.emails.filter(x => x.tag === this.state.currentSection)}
+          onEmailSelected={id => this.openEmail(id)}
+          selectedEmailId={this.state.selectedEmailId}
+          currentSection={this.state.currentSection}
+        />
+      </Grid.Column>
+      <Grid.Column width={9}>
+        <EmailDetails
+          email={this.props.emails.find(x => x.id === this.state.selectedEmailId)}
+          onDelete={id => this.deleteMessage(id)}
+        />
+      </Grid.Column>
+    </Grid>
+  );
+
   render() {
-    const currentEmail = this.props.emails.find(x => x.id === this.state.selectedEmailId);
     return (
-      <div>
-        <div className='title'>
-          {/* <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' /> */}
-          <img alt='logo' src='http://oyy735z2r.bkt.clouddn.com/logo1.png' />
-          {/* <div className='proname'>邮件监管系统</div> */}
-          {/* <div className='logout'>登出</div> */}
-        </div>
-        <div className='grid'>
-          <Grid>
+      <Router>
+        <div>
+          <div className='title'>
+            {/* <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' /> */}
+            <img alt='logo' src='http://oyy735z2r.bkt.clouddn.com/logo1.png' />
+            {/* <div className='proname'>邮件监管系统</div> */}
+            {/* <div className='logout'>登出</div> */}
+          </div>
+          <Grid className="menu-bar">
+            <Grid.Column textAlign="center" width={2}>
+              <Link to="/" className="home-link">主页</Link>
+            </Grid.Column>
             <Grid.Column width={2}>
-              <LeftSideBar
-                activeSection={this.state.currentSection}
-                emails={this.props.emails}
-                setSidebarSection={section => this.setSidebarSection(section)}
-                onUpdate={this.updateInbox}
-              />
-            </Grid.Column>
-            <Grid.Column width={5}>
-              <EmailList
-                emails={this.props.emails.filter(x => x.tag === this.state.currentSection)}
-                onEmailSelected={id => this.openEmail(id)}
-                selectedEmailId={this.state.selectedEmailId}
-                currentSection={this.state.currentSection}
-              />
-            </Grid.Column>
-            <Grid.Column width={9}>
-              <EmailDetails
-                email={currentEmail}
-                onDelete={id => this.deleteMessage(id)}
-              />
+              <Link to="/mailmonitor" className="mailMonitor-link">邮件监管</Link>
             </Grid.Column>
           </Grid>
+          <Route exact path="/" component={HomePage} />
+          <Route path='/mailmonitor' component={this.mailMonitorComponent} />
         </div>
-      </div>
+      </Router>
     )
   }
 }

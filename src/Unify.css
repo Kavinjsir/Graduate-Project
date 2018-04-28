@@ -31,15 +31,39 @@
   padding-left: 5px;
 }
 
-.grid {
-  /* background-image: url('http://oyy735z2r.bkt.clouddn.com/bg.jpg'); */
-  background: rgb(243, 245, 246);
+.menu-bar {
+  top: 52px;
+  position: sticky;
+  color: #B6CDDE !important;
+  border-bottom: #303F4E 1px ridge;
+}
+
+.home-link {
+  font-family: serif;
+  color: #303F4E;
+}
+
+.home-link:active,
+.home-link:hover,
+.home-link:focus {
+  color: #FF8500;
+}
+
+.mailMonitor-link {
+  font-family: serif;
+  color: #303F4E;
+}
+
+.mailMonitor-link:active,
+.mailMonitor-link:hover,
+.mailMonitor-link:focus {
+  color: #FF8500;
 }
 
 .sidebar {
   /* background: #B6CDDE; */
   height: 100vh;
-  top: 52px;
+  top: 102px;
   position: sticky;
   /* background: rgb(194, 209, 222); */
   border-right: ridge 2px;
@@ -85,7 +109,7 @@
 }
 
 .maillist {
-  top: 52px;
+  top: 102px;
   position: sticky;
   /* background: rgb(243, 245, 246); */
 }
@@ -110,7 +134,7 @@
 
 .maildetail {
   height: 100vh;
-  top: 52px;
+  top: 102px;
   position: sticky;
   overflow: scroll;
 }
