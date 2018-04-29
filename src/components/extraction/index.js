@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import Uploader from './upload';
 import Result from './result';
 
@@ -19,10 +20,14 @@ export default class Extraction extends React.Component {
 
   render() {
     return (
-      <div className='extraction'>
-        <Uploader getfile={this.getFile} />
-        <Result res={this.state.result} />
-      </div>
+      <Grid>
+        <Grid.Row>
+          <Uploader getfile={this.getFile} />
+        </Grid.Row>
+        <Grid.Row>
+          <Result res={this.state.result} />
+        </Grid.Row>
+      </Grid>
     );
   }
 }

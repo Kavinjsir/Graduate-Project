@@ -1,5 +1,6 @@
 import React from 'react';
 import request from 'superagent';
+import { Menu, Button, Icon } from 'semantic-ui-react';
 
 export default class Uploader extends React.Component {
   constructor(props) {
@@ -8,6 +9,10 @@ export default class Uploader extends React.Component {
   }
 
   async handleSubmit() {
+    if (this.refs.file == null || this.refs.file.files == null || this.refs.file.files.length === 0) {
+      alert('invalid file');
+      return;
+    }
     let formData = new FormData();
     let input = this.refs.file;
     let file = input.files[0];
@@ -27,14 +32,21 @@ export default class Uploader extends React.Component {
           return;
         }
         this.props.getfile(res.body);
-      })
+      });
   }
   render() {
     return (
-      <div>
-        文件选取<input type="file" ref='file' />
-        <button onClick={this.handleSubmit}>上传</button>
-      </div>
+      <Menu fluid borderless>
+        <Menu.Item position='right'>
+          <Icon name='file text' size='big' color='orange' inverted />
+        </Menu.Item>
+        <Menu.Item>
+          <input type="file" ref='file' />
+        </Menu.Item>
+        <Menu.Item position='left'>
+          <Button className='extractbtn' fluid basic content='上传' onClick={this.handleSubmit} />
+        </Menu.Item>
+      </Menu>
     );
   }
 }

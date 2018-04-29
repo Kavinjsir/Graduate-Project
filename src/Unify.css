@@ -172,10 +172,19 @@
 /* Extraction */
 .extraction {
   /* background: #B6CDDE; */
+  /*
   height: 87vh;
   top: 102px;
   position: fixed;
+  */
   /* background: rgb(194, 209, 222); */
   /* border-right: ridge 2px;
   border-right-color: #FF8500; */
+}
+
+.extractbtn:active,
+.extractbtn:hover,
+.extractbtn:focus {
+  color: #FF8500 !important;
+  cursor: pointer !important;
 }
