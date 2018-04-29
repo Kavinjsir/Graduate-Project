@@ -8,6 +8,7 @@ import LeftSideBar from './components/leftSideBar';
 import EmailList from './components/emailList';
 import EmailDetails from './components/emailDetails';
 import HomePage from './components/home';
+import Monitor from './components/monitor/index';
 // import Chart from './components/visualize';
 // import './App.css';
 import './Unify.css';
@@ -132,12 +133,19 @@ class App extends Component {
             <Grid.Column textAlign="center" width={2}>
               <Link to="/" className="home-link">主页</Link>
             </Grid.Column>
-            <Grid.Column width={2}>
+            <Grid.Column textAlign="center" width={2}>
               <Link to="/mailmonitor" className="mailMonitor-link">邮件监管</Link>
+            </Grid.Column>
+            <Grid.Column textAlign="center" width={2}>
+              <Link to="/algomonitor" className="mailMonitor-link">算法管理</Link>
+            </Grid.Column>
+            <Grid.Column textAlign="center" width={2}>
+              <Link to="/mailmonitor" className="mailMonitor-link">文本识别</Link>
             </Grid.Column>
           </Grid>
           <Route exact path="/" component={HomePage} />
           <Route path='/mailmonitor' component={this.mailMonitorComponent} />
+          <Route path='/algomonitor' component={Monitor} />
         </div>
       </Router>
     )

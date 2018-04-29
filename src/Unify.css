@@ -150,3 +150,20 @@
   font-weight: 100;
   color: rgba(0,0,0,.87);
 }
+
+/* Algo-Monitor */
+.monitor-sidebar {
+  /* background: #B6CDDE; */
+  height: 87vh;
+  top: 102px;
+  position: fixed;
+  /* background: rgb(194, 209, 222); */
+  border-right: ridge 2px;
+  border-right-color: #FF8500;
+}
+
+/* .monitor-detail {
+  height: 87vh;
+  top: 102px;
+  position: fixed;
+} */
