@@ -12,6 +12,7 @@ import Monitor from './components/monitor/index';
 // import Chart from './components/visualize';
 // import './App.css';
 import './Unify.css';
+import Extraction from './components/extraction';
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -140,12 +141,13 @@ class App extends Component {
               <Link to="/algomonitor" className="mailMonitor-link">算法管理</Link>
             </Grid.Column>
             <Grid.Column textAlign="center" width={2}>
-              <Link to="/mailmonitor" className="mailMonitor-link">文本识别</Link>
+              <Link to="/extraction" className="mailMonitor-link">信息抽取</Link>
             </Grid.Column>
           </Grid>
           <Route exact path="/" component={HomePage} />
           <Route path='/mailmonitor' component={this.mailMonitorComponent} />
           <Route path='/algomonitor' component={Monitor} />
+          <Route path='/extraction' component={Extraction} />
         </div>
       </Router>
     )
