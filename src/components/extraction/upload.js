@@ -33,6 +33,19 @@ export default class Uploader extends React.Component {
         }
         this.props.getfile(res.body);
       });
+    // const res = {
+    //   infoVOList: [
+    //     { id:  1,  type:  "names",  size:  10*Math.random(),  content:  "sadf" },
+    //     { id:  2,  type:  "phone",  size:  10*Math.random(),  content:  "sdfv" },
+    //     { id:  3,  type:  "places",  size:  10*Math.random(),  content:  "hulib" },
+    //     { id:  4,  type:  "e_mail",  size:  10*Math.random(),  content:  "uojfbv" },
+    //     { id:  5,  type:  "id",  size:  10*Math.random(),  content:  "ejfb" },
+    //     { id:  6,  type:  "passport",  size:  10*Math.random(),  content:  ";oejbfn" },
+    //     { id:  7,  type:  "car",  size:  10*Math.random(),  content:  "BEGINPR IVATEKE AIBADAN BAQEFAA IBAQC4V ZD8OERK ZKB7TWY MJMT6EL ENDPRIV" },
+    //     { id:  8,  type:  "date",  size:  10*Math.random(),  content:  "sofjd" }
+    //   ]
+    // }
+    // this.props.getfile(res);
   }
   render() {
     return (
