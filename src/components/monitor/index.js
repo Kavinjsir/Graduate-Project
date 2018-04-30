@@ -278,7 +278,7 @@ export default class Monitor extends React.Component {
         </Segment.Group>
         <Grid divided='vertically'>
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Segment} width={1} secondary content='算法注册:' />
+            <Grid.Column as={Segment} width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
