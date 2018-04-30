@@ -152,25 +152,10 @@
 }
 
 /* Algo-Monitor */
-.monitor-sidebar {
-  /* background: #B6CDDE; */
-  height: 87vh;
-  top: 102px;
-  position: fixed;
-  /* background: rgb(194, 209, 222); */
-  border-right: ridge 2px;
-  border-right-color: #FF8500;
-}
-
-/* .monitor-detail {
-  height: 87vh;
-  top: 102px;
-  position: fixed;
-} */
 
 
 /* Extraction */
-.extraction {
+/* .extraction { */
   /* background: #B6CDDE; */
   /*
   height: 87vh;
@@ -180,7 +165,7 @@
   /* background: rgb(194, 209, 222); */
   /* border-right: ridge 2px;
   border-right-color: #FF8500; */
-}
+/* } */
 
 .extractbtn:active,
 .extractbtn:hover,
