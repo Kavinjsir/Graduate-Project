@@ -5,7 +5,7 @@ const path = require('path');
 const Imap = require('imap');
 const simpleParser = require('mailparser').simpleParser;
 const send = require('./send');
-const fetchMails = require('./getMails');
+const fetchMailsFromDB = require('./getMails');
 const DB = require('./dbconnect');
 
 require('es6-promise').polyfill();
@@ -110,10 +110,10 @@ async function getAccountMails(ctx) {
   ctx.status = 200;
 }
 
-async function fecthMails(ctx) {
+async function fetchMails(ctx) {
   // fetch from db
   try {
-    const result = await fetchMails();
+    const result = await fetchMailsFromDB();
     let mailList = [];
     for (const mail of result) {
       if (mail.message != null) {
@@ -199,16 +199,25 @@ async function logOut(ctx) {
   }
   // DB operation to delete all related mails when logout.
   // TODO
-
-  ctx.body = 'done';
+ try {
+  const result = await DB.result(
+    'DELETE FROM mail WHERE account=${address}',
+    { address }
+  );
+  ctx.body = 'success';
   ctx.status = 200;
+  console.log(result);
+ } catch (error) {
+   ctx.body = error;
+   ctx.status = 500;
+ }
 }
 
 const router = new KoaRouter();
 
-router.get('/inbox', fecthMails);
+router.get('/inbox', fetchMails);
 router.post('/sent', sendMail);
 router.post('/login', getAccountMails);
-router.delete('logout', logOut);
+router.delete('/logout', logOut);
 
 module.exports = router;
