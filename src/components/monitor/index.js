@@ -74,7 +74,7 @@ export default class Monitor extends React.Component {
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      1000
+      60000
     );
   }
 
@@ -82,63 +82,122 @@ export default class Monitor extends React.Component {
     clearInterval(this.timerID);
   }
 
-  tick() {
-    const m = [
-      {
-        id: '0',
-        key: '0',
-        text: '朴素贝叶斯' + (new Date()).toLocaleTimeString(),
-        status: '1',  // inlist
-      },
-      {
-        id: '1',
-        key: '1',
-        text: '逻辑回归' + (new Date()).toLocaleTimeString(),
-        status: '0', //outlist
-      },
-      {
-        id: '2',
-        key: '2',
-        text: '支持向量机' + (new Date()).toLocaleTimeString(),
-        status: '1',  // inlist
-      },
-      {
-        id: '3',
-        key: '3',
-        text: '决策树' + (new Date()).toLocaleTimeString(),
-        status: '0',  // outlist
+  componentWillMount() {
+    request
+    .get('http://202.120.40.69:12347/manage/status')
+    .then(res => {
+      console.log(res);
+      const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
+      let mailList = [];
+      for (const e of email_registered) {
+        let idx = mailList.length.toString();
+        mailList.push({
+          id: idx,
+          key: idx,
+          text: e,
+          status: '1'
+        });
       }
-    ];
-    const i = [
-      {
-        id: '0',
-        key: '0',
-        text: 'KNN' + (new Date()).toLocaleTimeString(),
-        status: '1',  // inlist
-      },
-      {
-        id: '1',
-        key: '1',
-        text: 'K-MEANS' + (new Date()).toLocaleTimeString(),
-        status: '0', //outlist
-      },
-      {
-        id: '2',
-        key: '2',
-        text: 'CNN' + (new Date()).toLocaleTimeString(),
-        status: '1',  // inlist
-      },
-      {
-        id: '3',
-        key: '3',
-        text: 'RNN' + (new Date()).toLocaleTimeString(),
-        status: '0',  // outlist
+      for (const e of email_unregistered) {
+        let idx = mailList.length.toString();
+        mailList.push({
+          id: idx,
+          key: idx,
+          text: e,
+          status: '0'
+        });
       }
-    ];
-    this.setState({
-      mailAlgoList: m,
-      infoAlgoList: i,
+
+      let infoList = [];
+      for (const i of text_registered) {
+        let idx = infoList.length.toString();
+        infoList.push({
+          id: idx,
+          key: idx,
+          text: i,
+          status: '1'
+        });
+      }
+      for (const i of text_unregistered) {
+        let idx = infoList.length.toString();
+        infoList.push({
+          id: idx,
+          key: idx,
+          text: i,
+          status: '0'
+        });
+      }
+
+      this.setState({
+        selectedMailAlgo: email_calling,
+        selectedInfoAlgo: text_calling,
+        mailAlgoList: mailList,
+        infoAlgoList: infoList
+      });
     })
+    .catch(error => {
+      console.log(error);
+      alert('无法获取算法信息');
+    });
+  }
+
+  tick() {
+    request
+      .get('http://202.120.40.69:12347/manage/status')
+      .then(res => {
+        console.log(res);
+        const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
+        let mailList = [];
+        for (const e of email_registered) {
+          let idx = mailList.length.toString();
+          mailList.push({
+            id: idx,
+            key: idx,
+            text: e,
+            status: '1'
+          });
+        }
+        for (const e of email_unregistered) {
+          let idx = mailList.length.toString();
+          mailList.push({
+            id: idx,
+            key: idx,
+            text: e,
+            status: '0'
+          });
+        }
+
+        let infoList = [];
+        for (const i of text_registered) {
+          let idx = infoList.length.toString();
+          infoList.push({
+            id: idx,
+            key: idx,
+            text: i,
+            status: '1'
+          });
+        }
+        for (const i of text_unregistered) {
+          let idx = infoList.length.toString();
+          infoList.push({
+            id: idx,
+            key: idx,
+            text: i,
+            status: '0'
+          });
+        }
+
+        this.setState({
+          selectedMailAlgo: email_calling,
+          selectedInfoAlgo: text_calling,
+          mailAlgoList: mailList,
+          infoAlgoList: infoList
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        alert('无法获取算法信息');
+      });
   }
 
   getMailAlgo = status => {
@@ -158,13 +217,31 @@ export default class Monitor extends React.Component {
     }
     const id = this.state.preMailAlgoStatus;
     let al = this.state.mailAlgoList.find(x => x.id === id);
-    al.status = ('1' - al.status).toString();
-    const newList = this.state.mailAlgoList.filter(x => x.id !== id);
-    newList.push(al);
-    console.log(al);
-    this.setState({
-      mailAlgoList: newList
-    });
+    
+    const parameter = {
+      name: al.text,
+      type: 'email'
+    };
+    request
+      .post('http://202.120.40.69:12347/manage/register')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log(res);
+        // After succeed in server side
+        al.status = ('1' - al.status).toString();
+        const newList = this.state.mailAlgoList.filter(x => x.id !== id);
+        newList.push(al);
+        console.log(al);
+        this.setState({
+          mailAlgoList: newList
+        });
+        alert('注册成功');
+      })
+      .catch( error => {
+        console.log(error);
+        alert('注册失败');
+      })
   }
 
   updateDeleteMailAlgoStatus = () => {
@@ -174,13 +251,34 @@ export default class Monitor extends React.Component {
     }
     const id = this.state.preDeleteMailAlgo;
     let al = this.state.mailAlgoList.find(x => x.id === id);
-    al.status = ('1' - al.status).toString();
-    const newList = this.state.mailAlgoList.filter(x => x.id !== id);
-    newList.push(al);
-    console.log(al);
-    this.setState({
-      mailAlgoList: newList
-    });
+    if (al.text === this.state.selectedMailAlgo) {
+      alert('不能卸载正在调用中的算法');
+      return;
+    }
+    const parameter = {
+      name: al.text,
+      type: 'email'
+    };
+    request
+      .post('http://202.120.40.69:12347/manage/unregister')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log(res);
+        // After succeed in server side
+        al.status = ('1' - al.status).toString();
+        const newList = this.state.mailAlgoList.filter(x => x.id !== id);
+        newList.push(al);
+        console.log(al);
+        this.setState({
+          mailAlgoList: newList
+        });
+        alert('卸载成功');
+      })
+      .catch( error => {
+        console.log(error);
+        alert('卸载失败');
+      })
   }
 
   updatePreInfoAlgoStatus = () => {
@@ -190,12 +288,29 @@ export default class Monitor extends React.Component {
     }
     const id = this.state.preInfoAlgoStatus;
     let al = this.state.infoAlgoList.find(x => x.id === id);
-    al.status = ('1' - al.status).toString();
-    const newList = this.state.infoAlgoList.filter(x => x.id !== id);
-    newList.push(al);
-    console.log(al);
-    this.setState({
-      infoAlgoList: newList
+    const parameter = {
+      name: al.text,
+      type: 'text'
+    };
+    request
+    .post('http://202.120.40.69:12347/manage/register')
+    .set('Content-Type', 'application/json')
+    .send(JSON.stringify(parameter))
+    .then( res => {
+      console.log('info algo register', res);
+      // After succeed in server side
+      al.status = ('1' - al.status).toString();
+      const newList = this.state.infoAlgoList.filter(x => x.id !== id);
+      newList.push(al);
+      console.log(al);
+      this.setState({
+        infoAlgoList: newList
+      });
+      alert('注册成功');
+    })
+    .catch( error => {
+      console.log('info alo register error', error);
+      alert('注册失败');
     });
   }
 
@@ -206,12 +321,33 @@ export default class Monitor extends React.Component {
     }
     const id = this.state.preDeleteInfoAlgo;
     let al = this.state.infoAlgoList.find(x => x.id === id);
-    al.status = ('1' - al.status).toString();
-    const newList = this.state.infoAlgoList.filter(x => x.id !== id);
-    newList.push(al);
-    console.log(al);
-    this.setState({
-      infoAlgoList: newList
+    if (al.text === this.state.selectedInfoAlgo) {
+      alert('不能卸载正在调用中的算法');
+      return;
+    }
+    const parameter = {
+      name: al.text,
+      type: 'text'
+    };
+    request
+    .post('http://202.120.40.69:12347/manage/unregister')
+    .set('Content-Type', 'application/json')
+    .send(JSON.stringify(parameter))
+    .then( res => {
+      console.log('info algo unregister', res);
+      // After succeed in server side
+      al.status = ('1' - al.status).toString();
+      const newList = this.state.infoAlgoList.filter(x => x.id !== id);
+      newList.push(al);
+      console.log(al);
+      this.setState({
+        infoAlgoList: newList
+      });
+      alert('卸载成功');
+    })
+    .catch( error => {
+      console.log('info algo unregister error', error);
+      alert('卸载失败');
     });
   }
 
@@ -221,11 +357,28 @@ export default class Monitor extends React.Component {
       return;
     }
     const id = this.state.preSelectMailAlgo;
-    if (this.state.selectedMailAlgo === id) {
+    let al = this.state.mailAlgoList.find(x => x.id === id);
+    if (this.state.selectedMailAlgo === al.text) {
       alert('该算法已处于调用状态');
       return;
     }
-    this.setState({ selectedMailAlgo: id });
+    const parameter = {
+      name: al.text,
+      type: 'email'
+    };
+    request
+      .post('http://202.120.40.69:12347/manage/calling')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log('calling result',res);
+        alert('调用成功');
+        this.setState({ selectedMailAlgo: al.text });
+      })
+      .catch( error => {
+        console.log('calling failed', error);
+        alert('调用失败');
+      });
   }
 
   updateSelectedInfoAlgo = () => {
@@ -234,11 +387,28 @@ export default class Monitor extends React.Component {
       return;
     }
     const id = this.state.preSelectInfoAlgo;
-    if (this.state.selectedInfoAlgo === id) {
+    const al = this.state.infoAlgoList.find(x => x.id === id);
+    if (this.state.selectedInfoAlgo === al.text) {
       alert('该算法已处于调用状态');
       return;
     }
-    this.setState({ selectedInfoAlgo: id });
+    const parameter = {
+      name: al.text,
+      type: 'text'
+    };
+    request
+      .post('http://202.120.40.69:12347/manage/calling')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log('info calling result',res);
+        alert('调用成功');
+        this.setState({ selectedInfoAlgo: al.text });
+      })
+      .catch( error => {
+        console.log('info calling failed', error);
+        alert('调用失败');
+      });
   }
 
   upgradeMailAlgo = () => {
@@ -246,17 +416,33 @@ export default class Monitor extends React.Component {
       alert('无待升级算法，请选择...');
       return;
     }
+    const id = this.state.preUpgradeMailAlgo;
+    const al = this.state.mailAlgoList.find(x => x.id === id);
+    if (this.state.selectedMailAlgo === al.text) {
+      alert('不能升级正在调用中的算法');
+      return;
+    }
+    const parameter = {
+      name: al.text,
+      type: 'email'
+    };
     request
-      .post('http://202.120.40.69:12346/updatemodel')
-      .set('Content-Type', 'application//json')
-      .send('{"model": "svm"}')
-      .end((err, res) => {
-        if (err) {
-          console.log(err);
-          alert('sth. went wrong...', err);
-          return;
-        }
-        alert(res.body);
+      .post('http://202.120.40.69:12347/manage/update')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log('mail algo upgrade', res);
+        al.status = '-1';
+        const newList = this.state.mailAlgoList.filter(x => x.id !== al.id);
+        newList.push(al)
+        this.setState({
+          mailAlgoList: newList
+        });
+        alert('请求成功。算法正在升级中，暂时不能使用');
+      })
+      .catch( error => {
+        console.log('mail alog upgrade failed', error);
+        alert('算法升级申请失败');
       });
   }
 
@@ -265,7 +451,34 @@ export default class Monitor extends React.Component {
       alert('无待升级算法，请选择...');
       return;
     }
-    alert('info algo upgrade need to do...');
+    const id = this.state.preUpgradeInfoAlgo;
+    const al = this.state.infoAlgoList.find(x => x.id === id);
+    if (this.state.selectedInfoAlgo === al.text) {
+      alert('不能升级正在调用中的算法');
+      return;
+    }
+    const parameter = {
+      name: al.text,
+      type: 'text'
+    };
+    request
+      .post('http://202.120.40.69:12347/manage/update')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log('info algo upgrade', res);
+        al.status = '-1';
+        const newList = this.state.infoAlgoList.filter(x => x.id !== al.id);
+        newList.push(al);
+        this.setState({
+          infoAlgoList: newList
+        });
+        alert('请求成功。算法正在升级中，暂时不能使用');
+      })
+      .catch( error => {
+        console.log('info algo upgrade failed', error);
+        alert('算法升级申请失败');
+      });
   }
 
   render() {
@@ -273,8 +486,8 @@ export default class Monitor extends React.Component {
       <div>
         <br />
         <Segment.Group size='mini' horizontal>
-          <Segment textAlign='center' >{'邮件分类:' + this.state.mailAlgoList.find(x => x.id === this.state.selectedMailAlgo).text}</Segment>
-          <Segment textAlign='center' >{'信息抽取:' + this.state.infoAlgoList.find(x => x.id === this.state.selectedInfoAlgo).text}</Segment>
+          <Segment textAlign='center' >{'邮件分类:' + this.state.selectedMailAlgo}</Segment>
+          <Segment textAlign='center' >{'信息抽取:' + this.state.selectedInfoAlgo}</Segment>
         </Segment.Group>
         <Grid divided='vertically'>
           <Grid.Row columns={2} textAlign='center'>
