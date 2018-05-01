@@ -19,6 +19,7 @@ class App extends Component {
     this.state = {
       selectedEmailId: 0,
       currentSection: 'inbox',
+      address: '',
     };
   }
 
@@ -29,6 +30,13 @@ class App extends Component {
         const result = res.body;
         this.props.dispatch(fetchList(result));
       });
+    request
+      .get('http://127.0.0.1:5555/inbox')
+      .then(res => {
+        const result = res.body;
+        if (result === 'no account') { return; }
+        this.setState({ address: result});
+      })
   }
 
   updateInbox = async () => {
@@ -96,6 +104,75 @@ class App extends Component {
     });
   }
 
+  // Update Mail List on local server
+  handleList = () => {
+    request
+    .get('http://127.0.0.1:5555/inbox')
+    .then(res => {
+      const result = res.body;
+      this.props.dispatch(fetchList(result));
+    })
+    .catch(error => {
+      console.log(error);
+      alert('出现异常，无法获取邮件列表');
+    })
+  }
+
+  // logIn
+  handleLogIn = (user, pwd, receiveHost) => {
+    alert(user, pwd, receiveHost);
+    if (user == null || pwd == null || receiveHost == null) {
+      alert('无效的参数');
+      return;
+    }
+    const parameter = {
+      user,
+      pwd,
+      receiveHost,
+      sendHost: 'invalid@invalid.com'
+    };
+    request
+      .post('http://127.0.0.1:5555/login')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then( res => {
+        console.log(res);
+        if (res.text === 'Fetching...') {
+          this.setState({ address: parameter.user});
+          alert('正在抓取邮件列表......');
+          return;
+        }
+        alert('登入过程出现错误');
+      })
+      .catch( error => {
+        console.log(error);
+        alert('登入过程出现错误');
+      });
+  }
+
+  // logout
+  handleLogOut = () => {
+    if (this.state.address == null || this.state.address.length === 0) {
+      alert('不在登陆状态');
+      return;
+    }
+    const parameter = { address: this.state.address };
+    request
+      .delete('http://127.0.0.1:5555/logout')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then(res => {
+        console.log(res);
+        this.setState({ address: '' });
+        alert('成功登出');
+        this.props.dispatch(updateList([]));
+      })
+      .catch(error => {
+        console.log(error);
+        alert('登出过程出现错误');
+      });
+  }
+
   // Mail Monitor Component
   mailMonitorComponent = () => (
     <Grid>
@@ -105,6 +182,9 @@ class App extends Component {
           emails={this.props.emails}
           setSidebarSection={section => this.setSidebarSection(section)}
           onUpdate={this.updateInbox}
+          onLogIn={(u, p, h) => this.handleLogIn(u, p, h)}
+          onLogOut={this.handleLogOut}
+          onListUpdate={this.handleList}
         />
       </Grid.Column>
       <Grid.Column width={5}>

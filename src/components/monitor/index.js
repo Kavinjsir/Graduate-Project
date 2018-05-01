@@ -438,7 +438,7 @@ export default class Monitor extends React.Component {
         this.setState({
           mailAlgoList: newList
         });
-        alert('请求成功。算法正在升级中，暂时不能使用');
+        alert('请求成功。');
       })
       .catch( error => {
         console.log('mail alog upgrade failed', error);
@@ -473,7 +473,7 @@ export default class Monitor extends React.Component {
         this.setState({
           infoAlgoList: newList
         });
-        alert('请求成功。算法正在升级中，暂时不能使用');
+        alert('请求成功。');
       })
       .catch( error => {
         console.log('info algo upgrade failed', error);
@@ -622,7 +622,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待升级算法'
                     fluid
                     selection
-                    text={this.state.preUpgradeMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
+                    text={(this.state.preUpgradeMailAlgo >= 0) && (this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo)) ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
                   />
                 </Grid.Column>
                 <Grid.Column width={1} as={Button} content='确认' onClick={this.upgradeMailAlgo} />
@@ -637,7 +637,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待升级算法'
                     fluid
                     selection
-                    text={this.state.preUpgradeInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
+                    text={(this.state.preUpgradeInfoAlgo >= 0) && (this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo)) ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
                   />
                 </Grid.Column>
                 <Grid.Column width={1} as={Button} content='确认' onClick={this.upgradeInfoAlgo} />

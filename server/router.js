@@ -204,6 +204,7 @@ async function logOut(ctx) {
     'DELETE FROM mail WHERE account=${address}',
     { address }
   );
+  fs.writeFileSync(path.join(__dirname, 'acct.json'), '');
   ctx.body = 'success';
   ctx.status = 200;
   console.log(result);
@@ -213,11 +214,24 @@ async function logOut(ctx) {
  }
 }
 
+function getAcct(ctx) {
+  const cts =  fs.readFileSync(path.join(__dirname, 'acct.json'));
+  if (cts.length === 0) {
+    ctx.body = 'no account';
+    ctx.status = 200;
+    return;
+  }
+  const { user } = JSON.parse(cts.toString());
+  ctx.body = user;
+  ctx.status = 200;
+}
+
 const router = new KoaRouter();
 
 router.get('/inbox', fetchMails);
 router.post('/sent', sendMail);
 router.post('/login', getAccountMails);
 router.delete('/logout', logOut);
+router.get('/account', getAcct);
 
 module.exports = router;

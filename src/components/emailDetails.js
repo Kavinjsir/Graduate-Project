@@ -22,8 +22,8 @@ export default class EmailDetails extends React.Component {
   render() {
     if (!this.props.email) {
       return (
-        <div>
-          请选择邮件。
+        <div className='maildetail'>
+          <Segment>请选择邮件。</Segment>
         </div>
       );
     }

@@ -1,31 +1,10 @@
 import React from 'react';
-import { Button, List } from 'semantic-ui-react';
-
-import WriteLetter from './writeLetter';
+import { Button, List, Divider, Grid, Popup, Header, Input } from 'semantic-ui-react';
 
 export default class LeftSideBar extends React.Component {
-
-  state = { open: false }
-  open = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
   update = () => this.props.onUpdate();
 
-  getUnReadCount = () => {
-    return this.props.emails.reduce(
-      (previous, msg) => {
-        if (msg.read !== 'true') return previous + 1;
-        else return previous;
-      }, 0);
-  }
-
-  getDeletedCount = () => {
-    return this.props.emails.reduce(
-      (previous, msg) => {
-        if (msg.tag === 'deleted') return previous + 1;
-        else return previous;
-      }, 0);
-  }
-
+  // Counting mails from different type
   getInboxCount = () => {
     return this.props.emails.reduce(
       (previous, msg) => {
@@ -59,7 +38,6 @@ export default class LeftSideBar extends React.Component {
   }
 
   render() {
-    const { open } = this.state
     return (
       <div className='sidebar'>
         <div className='header'>
@@ -74,8 +52,18 @@ export default class LeftSideBar extends React.Component {
             写信
           </div> */}
         </div>
-        {/* <List animated > */}
         <List>
+          <List.Item onClick={() => this.props.onListUpdate()}>
+            <List.Content>
+              <Button circular fluid  size='medium' content='刷新邮件列表'  basic />
+            </List.Content>
+          </List.Item>
+
+          <List.Item>
+            <List.Content>
+              <Divider />
+            </List.Content>
+          </List.Item>
 
           <List.Item onClick={() => { this.props.setSidebarSection('inbox'); }}>
             <List.Content>
@@ -101,8 +89,46 @@ export default class LeftSideBar extends React.Component {
             </List.Content>
           </List.Item>
 
+          <List.Item>
+            <List.Content>
+              <Divider />
+            </List.Content>
+          </List.Item>
+
+          <List.Item>
+            <List.Content>
+              {/* <Button circular fluid size='medium' content='登入'  basic /> */}
+              <Popup
+                trigger={<Button circular fluid size='medium' content='登入' basic />}
+                flowing
+                hoverable
+              >
+                <Grid centered divided >
+                  <Grid.Row textAlign='center'>
+                    <Header as='h4'>帐号</Header>
+                    <Input type='email' onChange={(_, d) => this.user = d.value} />
+                  </Grid.Row>
+                  <Grid.Row textAlign='center'>
+                    <Header as='h4'>密码</Header>
+                    <Input type='password' onChange={(_, d) => this.pwd = d.value} />
+                  </Grid.Row>
+                  <Grid.Row textAlign='center'>
+                    <Header as='h4'>Host</Header>
+                    <Input type='url' onChange={(_, d) => this.host = d.value} />
+                  </Grid.Row>
+                  <Button circular basic content='确认' onClick={() => this.props.onLogIn(this.user, this.pwd, this.host)} />
+                </Grid>
+              </Popup>
+            </List.Content>
+          </List.Item>
+
+          <List.Item onClick={() => this.props.onLogOut()}>
+            <List.Content>
+              <Button circular fluid size='medium' content='登出'  basic />
+            </List.Content>
+          </List.Item>
+
         </List>
-        <WriteLetter open={open} onClose={this.close} />
       </div>
     );
   }
