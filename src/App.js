@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import request from 'superagent';
 
 import { fetchList, setRead, setDelete, updateList } from './reduce/action';
 import LeftSideBar from './components/leftSideBar';
@@ -9,13 +10,8 @@ import EmailList from './components/emailList';
 import EmailDetails from './components/emailDetails';
 import HomePage from './components/home';
 import Monitor from './components/monitor/index';
-// import Chart from './components/visualize';
-// import './App.css';
 import './Unify.css';
 import Extraction from './components/extraction';
-
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
 
 class App extends Component {
   constructor(props) {
@@ -27,42 +23,50 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    const response = await fetch('http://127.0.0.1:5555/inbox');
-    const result = await response.json();
-    this.props.dispatch(fetchList(result));
+    request
+      .get('http://127.0.0.1:5555/inbox')
+      .then(res => {
+        const result = res.body;
+        this.props.dispatch(fetchList(result));
+      });
   }
 
   updateInbox = async () => {
-    // const response = await fetch('http://127.0.0.1:5555/inbox');
     const mailList = this.props.emails.filter(m => m.tag !== 'spam').map(m => { return { id: m.id.toString(), content: m.message } });
     console.log(mailList);
-    try {
-      const response = await fetch('http://202.120.40.69:12346/sendjson', {
-        method: 'POST',
-        body: JSON.stringify(mailList),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-        mode: 'no-cors'
-      });
-      const result = await response.json();
-      console.log(result);
-      let newList = this.props.emails.filter(m => m.tag !== 'spam');
-      for (const r of result) {
-        let idx = newList.find(m => m.id === r.id);
-        if (r.tag === '0') {
-          idx.tag = 'spam';
-        } else if (r.tag === '2') {
-          idx.tag = 'protect';
-        } else {
-          idx.tag = 'inbox';
+    alert('正在进行邮件分类......');
+    request
+      .post('http://202.120.40.69:12346/sendjson')
+      .timeout({
+        response: 20000,
+        deadline: 30000
+      })
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(mailList))
+      .then(res => {
+        const result = res.body;
+        let newList = this.props.emails.concat();
+        for (const r of result) {
+          let idx = parseInt(r.id, 10);
+          let obj = newList[idx];
+          if (r.tag === '1') {
+            obj.tag = 'inbox';
+          } else if (r.tag === '0') {
+            obj.tag = 'spam';
+          } else if (r.tag === '2') {
+            obj.tag = 'sensitive';
+          } else if (r.tag === '3') {
+            obj.tag = 'secret';
+          }
+          newList.splice(idx, 1, obj);
         }
-        newList = newList.filter(m => m.id !== r.id).push(idx);
-      }
-      this.props.dispatch(updateList(newList));
-    } catch (error) {
-      alert('Filter failed:', error);
-    }
+        this.props.dispatch(updateList(newList));
+        alert('分类完毕!');
+      })
+      .catch(error => {
+        console.log('failed at:', error);
+        alert('Sth. went wrong...');
+      });
   }
 
   openEmail = id => {
@@ -138,10 +142,10 @@ class App extends Component {
               <Link to="/mailmonitor" className="mailMonitor-link">邮件监管</Link>
             </Grid.Column>
             <Grid.Column textAlign="center" width={2}>
-              <Link to="/algomonitor" className="mailMonitor-link">算法管理</Link>
+              <Link to="/extraction" className="mailMonitor-link">信息抽取</Link>
             </Grid.Column>
             <Grid.Column textAlign="center" width={2}>
-              <Link to="/extraction" className="mailMonitor-link">信息抽取</Link>
+              <Link to="/algomonitor" className="mailMonitor-link">算法管理</Link>
             </Grid.Column>
           </Grid>
           <Route exact path="/" component={HomePage} />

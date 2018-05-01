@@ -26,6 +26,38 @@ export default class LeftSideBar extends React.Component {
       }, 0);
   }
 
+  getInboxCount = () => {
+    return this.props.emails.reduce(
+      (previous, msg) => {
+        if (msg.tag === 'inbox') return previous + 1;
+        else return previous;
+      }, 0);
+  }
+
+  getSpamCount = () => {
+    return this.props.emails.reduce(
+      (previous, msg) => {
+        if (msg.tag === 'spam') return previous + 1;
+        else return previous;
+      }, 0);
+  }
+
+  getSensitiveCount = () => {
+    return this.props.emails.reduce(
+      (previous, msg) => {
+        if (msg.tag === 'sensitive') return previous + 1;
+        else return previous;
+      }, 0);
+  }
+
+  getSecretCount = () => {
+    return this.props.emails.reduce(
+      (previous, msg) => {
+        if (msg.tag === 'secret') return previous + 1;
+        else return previous;
+      }, 0);
+  }
+
   render() {
     const { open } = this.state
     return (
@@ -44,36 +76,31 @@ export default class LeftSideBar extends React.Component {
         </div>
         {/* <List animated > */}
         <List>
+
           <List.Item onClick={() => { this.props.setSidebarSection('inbox'); }}>
             <List.Content>
-              <Button circular fluid size='medium' content='收件箱' icon='mail outline' basic label={this.getUnReadCount() ? this.getUnReadCount() : null} />
+              <Button circular fluid size='medium' content='正常' icon='mail outline' basic label={this.getInboxCount() > 0 ? this.getInboxCount() : null} />
             </List.Content>
           </List.Item>
-          {/* <List.Item onClick={() => { this.props.setSidebarSection('sent'); }}>
-            <List.Content>
-              <Button circular fluid size='medium' content='发件箱' icon='send' basic />
-            </List.Content>
-          </List.Item>
-          <List.Item onClick={() => { this.props.setSidebarSection('deleted'); }}>
-            <List.Content>
-              <Button circular fluid size='medium' content='已删除' icon='trash' basic />
-            </List.Content>
-          </List.Item> */}
+
           <List.Item onClick={() => { this.props.setSidebarSection('spam'); }}>
             <List.Content>
-              <Button circular fluid size='medium' content='垃圾邮件' icon='remove' basic />
+              <Button circular fluid size='medium' content='垃圾' icon='remove' basic label={this.getSpamCount() > 0 ? this.getSpamCount() : null} />
             </List.Content>
           </List.Item>
+
           <List.Item onClick={() => { this.props.setSidebarSection('secret'); }}>
             <List.Content>
-              <Button circular fluid size='medium' content='涉密邮件' icon='protect' basic />
+              <Button circular fluid size='medium' content='涉密' icon='protect' basic label={this.getSecretCount() > 0 ? this.getSecretCount() : null } />
             </List.Content>
           </List.Item>
+
           <List.Item onClick={() => { this.props.setSidebarSection('sensitive'); }}>
             <List.Content>
-              <Button circular fluid size='medium' content='敏感邮件' icon='hide' basic />
+              <Button circular fluid size='medium' content='敏感' icon='hide' basic label={this.getSensitiveCount() > 0 ? this.getSensitiveCount() : null} />
             </List.Content>
           </List.Item>
+
         </List>
         <WriteLetter open={open} onClose={this.close} />
       </div>
