@@ -8,7 +8,16 @@ export default class Extraction extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: [],
+      result: [
+        {id: 1, type: "names", size: 7, content: "姓名"},
+        {id: 2, type: "phone", size: 6, content: "手机号码"},
+        {id: 3, type: "places", size: 10, content: "地点"},
+        {id: 4, type: "e_mail", size: 8, content: "邮箱"},
+        {id: 5, type: "id", size: 5, content: "身份证号码"},
+        {id: 6, type: "passport", size: 4, content: "护照号码"},
+        {id: 7, type: "car", size: 5, content: "车牌号码"},
+        {id: 8, type: "date", size: 8, content: "日期"}
+      ],
       items: [
         {
           header: '姓名',

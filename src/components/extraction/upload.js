@@ -1,10 +1,13 @@
 import React from 'react';
 import request from 'superagent';
-import { Menu, Button, Icon } from 'semantic-ui-react';
+import { Menu, Button, Breadcrumb } from 'semantic-ui-react';
 
 export default class Uploader extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      extractState: 0
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -13,12 +16,13 @@ export default class Uploader extends React.Component {
       alert('invalid file');
       return;
     }
+    this.setState({ extractState: 1});
     let formData = new FormData();
     let input = this.refs.file;
     let file = input.files[0];
     formData.append('file', file);
     alert(
-      `Selected file - ${file.name}`
+      `正在抽取${file.name}中的信息......`
     );
     console.log(file);
 
@@ -28,36 +32,40 @@ export default class Uploader extends React.Component {
       .end((err, res) => {
         if (err) {
           console.log(err);
-          alert('sth. wrong,', err);
+          this.setState({ extractState: 3});
+          alert('信息抽取失败', err);
           return;
         }
+        this.setState({ extractState: 2});
         this.props.getfile(res.body);
       });
-    // const res = {
-    //   infoVOList: [
-    //     { id:  1,  type:  "names",  size:  10*Math.random(),  content:  "sadf" },
-    //     { id:  2,  type:  "phone",  size:  10*Math.random(),  content:  "sdfv" },
-    //     { id:  3,  type:  "places",  size:  10*Math.random(),  content:  "hulib" },
-    //     { id:  4,  type:  "e_mail",  size:  10*Math.random(),  content:  "uojfbv" },
-    //     { id:  5,  type:  "id",  size:  10*Math.random(),  content:  "ejfb" },
-    //     { id:  6,  type:  "passport",  size:  10*Math.random(),  content:  ";oejbfn" },
-    //     { id:  7,  type:  "car",  size:  10*Math.random(),  content:  "BEGINPR IVATEKE AIBADAN BAQEFAA IBAQC4V ZD8OERK ZKB7TWY MJMT6EL ENDPRIV" },
-    //     { id:  8,  type:  "date",  size:  10*Math.random(),  content:  "sofjd" }
-    //   ]
-    // }
-    // this.props.getfile(res);
   }
   render() {
+    const state = this.state.extractState;
     return (
       <Menu fluid borderless>
         <Menu.Item position='right'>
-          <Icon name='file text' size='big' color='orange' inverted />
+          {/* <Icon name='file text' size='large' color='black' inverted /> */}
+          <Breadcrumb>
+            <Breadcrumb.Section >当前分析算法</Breadcrumb.Section>
+            <Breadcrumb.Divider icon='long arrow right' />
+            <Breadcrumb.Section >Jieba</Breadcrumb.Section>
+          </Breadcrumb>
         </Menu.Item>
         <Menu.Item>
           <input type="file" ref='file' />
-        </Menu.Item>
-        <Menu.Item position='left'>
           <Button className='extractbtn' fluid basic content='上传' onClick={this.handleSubmit} />
+        </Menu.Item>
+        {/* <Menu.Item position='left'>
+          <Button className='extractbtn' fluid basic content='上传' onClick={this.handleSubmit} />
+        </Menu.Item> */}
+        <Menu.Item position='left'>
+          {state === 0 ? <Button fluid basic content='状态：可以上传' color='teal' /> : 
+           state === 1 ? <Button fluid basic content='状态：正在分析' color='orange' /> :
+           state === 2 ? <Button fluid basic content='状态：分析完成' color='teal' /> :
+           state === 3 ? <Button fluid basic content='状态：分析失败' color='red' />:
+           null
+          }
         </Menu.Item>
       </Menu>
     );
