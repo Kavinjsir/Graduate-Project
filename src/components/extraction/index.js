@@ -22,42 +22,42 @@ export default class Extraction extends React.Component {
         {
           header: '姓名',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '电话／手机号码',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '地点',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '邮箱',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '身份证',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '护照',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '车牌',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         },
         {
           header: '日期',
           description: '',
-          meta: '可靠度: ',
+          meta: '抽取数量: ',
         }
       ]
     };
@@ -70,8 +70,8 @@ export default class Extraction extends React.Component {
     });
     let newItems = this.state.items;
     for (let i = 0; i < 8; ++i) {
-      newItems[i].description = res.infoVOList[i].content;
-      newItems[i].meta = '可靠度: ' + res.infoVOList[i].size.toString();
+      newItems[i].description = res.infoVOList[i].content.replace(/,/g, " ");
+      newItems[i].meta = '抽取数量: ' + res.infoVOList[i].size.toString();
     }
     this.setState({
       items: newItems

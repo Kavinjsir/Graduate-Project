@@ -97,22 +97,22 @@ export default class LeftSideBar extends React.Component {
 
           <List.Item>
             <List.Content>
-              {/* <Button circular fluid size='medium' content='登入'  basic /> */}
               <Popup
                 trigger={<Button circular fluid size='medium' content='登入' basic />}
                 flowing
                 hoverable
+                on='click'
               >
-                <Grid centered divided >
-                  <Grid.Row textAlign='center'>
+                <Grid centered >
+                  <Grid.Row>
                     <Header as='h4'>帐号</Header>
                     <Input type='email' onChange={(_, d) => this.user = d.value} />
                   </Grid.Row>
-                  <Grid.Row textAlign='center'>
+                  <Grid.Row>
                     <Header as='h4'>密码</Header>
                     <Input type='password' onChange={(_, d) => this.pwd = d.value} />
                   </Grid.Row>
-                  <Grid.Row textAlign='center'>
+                  <Grid.Row>
                     <Header as='h4'>Host</Header>
                     <Input type='url' onChange={(_, d) => this.host = d.value} />
                   </Grid.Row>

@@ -120,7 +120,6 @@ class App extends Component {
 
   // logIn
   handleLogIn = (user, pwd, receiveHost) => {
-    alert(user, pwd, receiveHost);
     if (user == null || pwd == null || receiveHost == null) {
       alert('无效的参数');
       return;
