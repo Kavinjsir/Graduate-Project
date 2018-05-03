@@ -174,7 +174,7 @@ class App extends Component {
 
   // Mail Monitor Component
   mailMonitorComponent = () => (
-    <Grid>
+    <Grid className='mail-monitor'>
       <Grid.Column width={2}>
         <LeftSideBar
           activeSection={this.state.currentSection}

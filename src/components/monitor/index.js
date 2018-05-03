@@ -491,7 +491,7 @@ export default class Monitor extends React.Component {
         </Segment.Group>
         <Grid divided='vertically'>
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Segment} width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
+            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -507,8 +507,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preMailAlgoStatus >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preMailAlgoStatus).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updatePreMailAlgoStatus} />
-
+                {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreMailAlgoStatus} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreMailAlgoStatus} /> </Grid.Column>
               </Grid.Row >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -523,7 +523,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preInfoAlgoStatus >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preInfoAlgoStatus).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updatePreInfoAlgoStatus} />
+                {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreInfoAlgoStatus} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreInfoAlgoStatus} /> </Grid.Column>
               </Grid.Row >
 
             </Grid.Column>
@@ -532,7 +533,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Segment} width={1} secondary content='算法卸载:' />
+            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法卸载</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -547,7 +548,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preDeleteMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preDeleteMailAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updateDeleteMailAlgoStatus} />
+                {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteMailAlgoStatus} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteMailAlgoStatus} /> </Grid.Column>
               </Grid.Row >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -562,7 +564,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preDeleteInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preDeleteInfoAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updateDeleteInfoAlgoStatus} />
+                {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteInfoAlgoStatus} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteInfoAlgoStatus} /> </Grid.Column>
               </Grid.Row >
 
             </Grid.Column>
@@ -571,7 +574,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Segment} width={1} secondary content='算法调用:' />
+            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法调用</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -586,7 +589,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preSelectMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preSelectMailAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updateSelectedMailAlgo} />
+                {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedMailAlgo} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedMailAlgo} /> </Grid.Column>
               </Grid.Row >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -601,7 +605,8 @@ export default class Monitor extends React.Component {
                     text={this.state.preSelectInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preSelectInfoAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.updateSelectedInfoAlgo} />
+                {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedInfoAlgo} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedInfoAlgo} /> </Grid.Column>
               </Grid.Row >
 
             </Grid.Column>
@@ -610,7 +615,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Segment} width={1} secondary content='算法升级:' />
+            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法升级</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -625,7 +630,8 @@ export default class Monitor extends React.Component {
                     text={(this.state.preUpgradeMailAlgo >= 0) && (this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo)) ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.upgradeMailAlgo} />
+                {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeMailAlgo} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeMailAlgo} /> </Grid.Column>
               </Grid.Row >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -640,7 +646,8 @@ export default class Monitor extends React.Component {
                     text={(this.state.preUpgradeInfoAlgo >= 0) && (this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo)) ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
                   />
                 </Grid.Column>
-                <Grid.Column width={1} as={Button} content='确认' onClick={this.upgradeInfoAlgo} />
+                {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeInfoAlgo} /> */}
+                <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeInfoAlgo} /> </Grid.Column>
               </Grid.Row >
 
             </Grid.Column>

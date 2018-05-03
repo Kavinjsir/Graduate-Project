@@ -5,10 +5,11 @@ import { Card, Image } from 'semantic-ui-react';
 export default class HomePage extends React.Component {
   render() {
     const ImgList = [
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide1",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide2",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide3",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide4"
+      // "http://placehold.it/1000x400/ffffff/c0392b/&text=slide1",
+      "http://oyy735z2r.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-03%20%E4%B8%8B%E5%8D%888.28.43.png",
+      "http://oyy735z2r.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-03%20%E4%B8%8B%E5%8D%888.21.24.png",
+      "http://oyy735z2r.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-03%20%E4%B8%8B%E5%8D%888.32.53.png",
+      "http://oyy735z2r.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-03%20%E4%B8%8B%E5%8D%888.46.55.png"
     ]
     return (
       <div className="homepage">
