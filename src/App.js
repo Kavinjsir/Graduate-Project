@@ -31,7 +31,7 @@ class App extends Component {
         this.props.dispatch(fetchList(result));
       });
     request
-      .get('http://127.0.0.1:5555/inbox')
+      .get('http://127.0.0.1:5555/account')
       .then(res => {
         const result = res.body;
         if (result === 'no account') { return; }
@@ -210,6 +210,7 @@ class App extends Component {
           <div className='title'>
             {/* <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' /> */}
             <img alt='logo' src='http://oyy735z2r.bkt.clouddn.com/logo1.png' />
+            <div>{this.state.address}</div>
             {/* <div className='proname'>邮件监管系统</div> */}
             {/* <div className='logout'>登出</div> */}
           </div>

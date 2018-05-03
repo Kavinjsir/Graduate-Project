@@ -113,7 +113,13 @@ async function getAccountMails(ctx) {
 async function fetchMails(ctx) {
   // fetch from db
   try {
-    const result = await fetchMailsFromDB();
+    // const result = await fetchMailsFromDB();
+    const cts =  fs.readFileSync(path.join(__dirname, 'acct.json'));
+    const { user } = JSON.parse(cts.toString());
+    const result = await DB.many(
+      'SELECT * FROM mail WHERE account=${user}',
+      { user }
+    );
     let mailList = [];
     for (const mail of result) {
       if (mail.message != null) {
