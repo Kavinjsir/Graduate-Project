@@ -203,6 +203,18 @@ async function logOut(ctx) {
     ctx.status = 200;
     return;
   }
+  const cts = fs.readFileSync(path.join(__dirname, 'acct.json'));
+  if (cts.length === 0) {
+    ctx.body = 'Invalid';
+    ctx.status = 500;
+    return;
+  }
+  const { user } = JSON.parse(cts.toString());
+  if (user !== address){
+    ctx.body = 'Invalid';
+    ctx.status = 500;
+    return;
+  }
   // DB operation to delete all related mails when logout.
   // TODO
  try {
