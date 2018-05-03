@@ -1,43 +1,39 @@
 import React from 'react';
 import Carousel from 'nuka-carousel';
-import { Card, Image, Segment } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 export default class HomePage extends React.Component {
   render() {
     const ImgList = [
       "http://placehold.it/1000x400/ffffff/c0392b/&text=slide1",
       "http://placehold.it/1000x400/ffffff/c0392b/&text=slide2",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide3",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide4",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide5",
-      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide6"
+      "http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"
     ]
     return (
       <div className="homepage">
-      <Carousel clas autoplay={true}>
-        {/* {
-          ImgList.map(source => (
-            <img src={source} />
-          ))
-        } */}
+      <Carousel
+        autoplay={true}
+        dragging={true}
+        renderCenterLeftControls={null}
+        renderCenterRightControls={null}
+        cellSpacing={20}
+      >
         {
                     ImgList.map(source => (
-                      <Segment>
-                      <Card centered>
+                      <Card color='blue' fluid centered>
                         <Card.Content>
-                          <Image floated='right' src={source} size='huge' />
-                          <Card.Header>
+                          <Image floated='right' src={source} size='massive' />
+                          <Card.Header textAlign='right'>
                             source
                           </Card.Header>
-                          <Card.Meta>
+                          <Card.Meta textAlign='right'>
                             {(new Date()).toLocaleDateString()}
                           </Card.Meta>
-                          <Card.Description>
+                          <Card.Description textAlign='center'>
                             Need for Details
                           </Card.Description>
                         </Card.Content>
                       </Card>
-                      </Segment>
                     ))
         }
       </Carousel>
