@@ -1,7 +1,24 @@
 import React from 'react';
-import { Button, List, Divider, Grid, Popup, Header, Input } from 'semantic-ui-react';
+import { Button, List, Divider, Grid, Popup, Header, Input, Message } from 'semantic-ui-react';
+import request from 'superagent';
 
 export default class LeftSideBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      algo: ''
+    };
+  }
+
+  componentWillMount() {
+    request
+      .get('http://202.120.40.69:12347/manage/status')
+      .then(res => {
+        const { email_calling } = res.body;
+        this.setState({ algo: email_calling });
+      })
+  }
+
   update = () => this.props.onUpdate();
 
   // Counting mails from different type
@@ -40,19 +57,14 @@ export default class LeftSideBar extends React.Component {
   render() {
     return (
       <div className='sidebar'>
-        <div className='header'>
-          {/* <Button className='receive' fluid content='收信' icon='mail' basic inverted color='orange' />
-          <Button className='write' fluid content='写信' icon='mail forward' basic inverted color='orange' /> */}
-          <div className='receive' onClick={() => this.update()}>
-            {/* 收信 */}
-            过滤
-          </div>
-          {/* <div className='fengexian'>|</div>
-          <div className='write' onClick={() => this.open()}>
-            写信
-          </div> */}
-        </div>
         <List>
+        <Message attached='top' positive size='mini' content={'执行算法:' + this.state.algo} />
+          <List.Item onClick={() => this.update()}>
+            <List.Content>
+              <Button color='teal' fluid  size='medium' content='过滤'  basic />
+            </List.Content>
+          </List.Item>
+
           <List.Item onClick={() => this.props.onListUpdate()}>
             <List.Content>
               <Button circular fluid  size='medium' content='刷新邮件列表'  basic />

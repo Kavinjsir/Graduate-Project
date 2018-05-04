@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Dropdown, Segment } from 'semantic-ui-react';
+import { Grid, Button, Dropdown, Message } from 'semantic-ui-react';
 import request from 'superagent';
 
 export default class Monitor extends React.Component {
@@ -84,61 +84,61 @@ export default class Monitor extends React.Component {
 
   componentWillMount() {
     request
-    .get('http://202.120.40.69:12347/manage/status')
-    .then(res => {
-      console.log(res);
-      const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
-      let mailList = [];
-      for (const e of email_registered) {
-        let idx = mailList.length.toString();
-        mailList.push({
-          id: idx,
-          key: idx,
-          text: e,
-          status: '1'
-        });
-      }
-      for (const e of email_unregistered) {
-        let idx = mailList.length.toString();
-        mailList.push({
-          id: idx,
-          key: idx,
-          text: e,
-          status: '0'
-        });
-      }
+      .get('http://202.120.40.69:12347/manage/status')
+      .then(res => {
+        console.log(res);
+        const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
+        let mailList = [];
+        for (const e of email_registered) {
+          let idx = mailList.length.toString();
+          mailList.push({
+            id: idx,
+            key: idx,
+            text: e,
+            status: '1'
+          });
+        }
+        for (const e of email_unregistered) {
+          let idx = mailList.length.toString();
+          mailList.push({
+            id: idx,
+            key: idx,
+            text: e,
+            status: '0'
+          });
+        }
 
-      let infoList = [];
-      for (const i of text_registered) {
-        let idx = infoList.length.toString();
-        infoList.push({
-          id: idx,
-          key: idx,
-          text: i,
-          status: '1'
-        });
-      }
-      for (const i of text_unregistered) {
-        let idx = infoList.length.toString();
-        infoList.push({
-          id: idx,
-          key: idx,
-          text: i,
-          status: '0'
-        });
-      }
+        let infoList = [];
+        for (const i of text_registered) {
+          let idx = infoList.length.toString();
+          infoList.push({
+            id: idx,
+            key: idx,
+            text: i,
+            status: '1'
+          });
+        }
+        for (const i of text_unregistered) {
+          let idx = infoList.length.toString();
+          infoList.push({
+            id: idx,
+            key: idx,
+            text: i,
+            status: '0'
+          });
+        }
 
-      this.setState({
-        selectedMailAlgo: email_calling,
-        selectedInfoAlgo: text_calling,
-        mailAlgoList: mailList,
-        infoAlgoList: infoList
+        this.setState({
+          selectedMailAlgo: email_calling,
+          selectedInfoAlgo: text_calling,
+          mailAlgoList: mailList,
+          infoAlgoList: infoList
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        alert('无法获取算法信息');
       });
-    })
-    .catch(error => {
-      console.log(error);
-      alert('无法获取算法信息');
-    });
   }
 
   tick() {
@@ -217,7 +217,7 @@ export default class Monitor extends React.Component {
     }
     const id = this.state.preMailAlgoStatus;
     let al = this.state.mailAlgoList.find(x => x.id === id);
-    
+
     const parameter = {
       name: al.text,
       type: 'email'
@@ -226,7 +226,7 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/register')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
+      .then(res => {
         console.log(res);
         // After succeed in server side
         al.status = ('1' - al.status).toString();
@@ -238,7 +238,7 @@ export default class Monitor extends React.Component {
         });
         alert('注册成功');
       })
-      .catch( error => {
+      .catch(error => {
         console.log(error);
         alert('注册失败');
       })
@@ -263,7 +263,7 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/unregister')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
+      .then(res => {
         console.log(res);
         // After succeed in server side
         al.status = ('1' - al.status).toString();
@@ -275,7 +275,7 @@ export default class Monitor extends React.Component {
         });
         alert('卸载成功');
       })
-      .catch( error => {
+      .catch(error => {
         console.log(error);
         alert('卸载失败');
       })
@@ -293,25 +293,25 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-    .post('http://202.120.40.69:12347/manage/register')
-    .set('Content-Type', 'application/json')
-    .send(JSON.stringify(parameter))
-    .then( res => {
-      console.log('info algo register', res);
-      // After succeed in server side
-      al.status = ('1' - al.status).toString();
-      const newList = this.state.infoAlgoList.filter(x => x.id !== id);
-      newList.push(al);
-      console.log(al);
-      this.setState({
-        infoAlgoList: newList
+      .post('http://202.120.40.69:12347/manage/register')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then(res => {
+        console.log('info algo register', res);
+        // After succeed in server side
+        al.status = ('1' - al.status).toString();
+        const newList = this.state.infoAlgoList.filter(x => x.id !== id);
+        newList.push(al);
+        console.log(al);
+        this.setState({
+          infoAlgoList: newList
+        });
+        alert('注册成功');
+      })
+      .catch(error => {
+        console.log('info alo register error', error);
+        alert('注册失败');
       });
-      alert('注册成功');
-    })
-    .catch( error => {
-      console.log('info alo register error', error);
-      alert('注册失败');
-    });
   }
 
   updateDeleteInfoAlgoStatus = () => {
@@ -330,25 +330,25 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-    .post('http://202.120.40.69:12347/manage/unregister')
-    .set('Content-Type', 'application/json')
-    .send(JSON.stringify(parameter))
-    .then( res => {
-      console.log('info algo unregister', res);
-      // After succeed in server side
-      al.status = ('1' - al.status).toString();
-      const newList = this.state.infoAlgoList.filter(x => x.id !== id);
-      newList.push(al);
-      console.log(al);
-      this.setState({
-        infoAlgoList: newList
+      .post('http://202.120.40.69:12347/manage/unregister')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify(parameter))
+      .then(res => {
+        console.log('info algo unregister', res);
+        // After succeed in server side
+        al.status = ('1' - al.status).toString();
+        const newList = this.state.infoAlgoList.filter(x => x.id !== id);
+        newList.push(al);
+        console.log(al);
+        this.setState({
+          infoAlgoList: newList
+        });
+        alert('卸载成功');
+      })
+      .catch(error => {
+        console.log('info algo unregister error', error);
+        alert('卸载失败');
       });
-      alert('卸载成功');
-    })
-    .catch( error => {
-      console.log('info algo unregister error', error);
-      alert('卸载失败');
-    });
   }
 
   updateSelectedMailAlgo = () => {
@@ -370,12 +370,12 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/calling')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
-        console.log('calling result',res);
+      .then(res => {
+        console.log('calling result', res);
         alert('调用成功');
         this.setState({ selectedMailAlgo: al.text });
       })
-      .catch( error => {
+      .catch(error => {
         console.log('calling failed', error);
         alert('调用失败');
       });
@@ -400,12 +400,12 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/calling')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
-        console.log('info calling result',res);
+      .then(res => {
+        console.log('info calling result', res);
         alert('调用成功');
         this.setState({ selectedInfoAlgo: al.text });
       })
-      .catch( error => {
+      .catch(error => {
         console.log('info calling failed', error);
         alert('调用失败');
       });
@@ -430,7 +430,7 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/update')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
+      .then(res => {
         console.log('mail algo upgrade', res);
         al.status = '-1';
         const newList = this.state.mailAlgoList.filter(x => x.id !== al.id);
@@ -440,7 +440,7 @@ export default class Monitor extends React.Component {
         });
         alert('请求成功。');
       })
-      .catch( error => {
+      .catch(error => {
         console.log('mail alog upgrade failed', error);
         alert('算法升级申请失败');
       });
@@ -465,7 +465,7 @@ export default class Monitor extends React.Component {
       .post('http://202.120.40.69:12347/manage/update')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
-      .then( res => {
+      .then(res => {
         console.log('info algo upgrade', res);
         al.status = '-1';
         const newList = this.state.infoAlgoList.filter(x => x.id !== al.id);
@@ -475,7 +475,7 @@ export default class Monitor extends React.Component {
         });
         alert('请求成功。');
       })
-      .catch( error => {
+      .catch(error => {
         console.log('info algo upgrade failed', error);
         alert('算法升级申请失败');
       });
@@ -485,13 +485,14 @@ export default class Monitor extends React.Component {
     return (
       <div>
         <br />
-        <Segment.Group size='mini' horizontal>
+        <br />
+        {/* <Segment.Group size='mini' horizontal>
           <Segment textAlign='center' >{'邮件分类:' + this.state.selectedMailAlgo}</Segment>
           <Segment textAlign='center' >{'信息抽取:' + this.state.selectedInfoAlgo}</Segment>
-        </Segment.Group>
+        </Segment.Group> */}
         <Grid divided='vertically'>
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
+            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -504,6 +505,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待注册算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preMailAlgoStatus >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preMailAlgoStatus).text : null}
                   />
                 </Grid.Column>
@@ -520,6 +522,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待注册算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preInfoAlgoStatus >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preInfoAlgoStatus).text : null}
                   />
                 </Grid.Column>
@@ -533,7 +536,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法卸载</div></Grid.Column>
+            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法卸载</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -545,6 +548,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待卸载算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preDeleteMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preDeleteMailAlgo).text : null}
                   />
                 </Grid.Column>
@@ -561,6 +565,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待卸载算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preDeleteInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preDeleteInfoAlgo).text : null}
                   />
                 </Grid.Column>
@@ -574,7 +579,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法调用</div></Grid.Column>
+            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法调用</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -586,6 +591,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待调用算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preSelectMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preSelectMailAlgo).text : null}
                   />
                 </Grid.Column>
@@ -602,6 +608,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待调用算法'
                     fluid
                     selection
+                    scrolling
                     text={this.state.preSelectInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preSelectInfoAlgo).text : null}
                   />
                 </Grid.Column>
@@ -615,7 +622,7 @@ export default class Monitor extends React.Component {
           {/**************************************************************************************/}
 
           <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Button} basic width={1} secondary><div className='shuxiang'>算法升级</div></Grid.Column>
+            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法升级</div></Grid.Column>
             <Grid.Column as={Grid} columns={2} width={15} >
 
               <Grid.Row columns={3} divided='vertically' >
@@ -627,6 +634,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待升级算法'
                     fluid
                     selection
+                    scrolling
                     text={(this.state.preUpgradeMailAlgo >= 0) && (this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo)) ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
                   />
                 </Grid.Column>
@@ -643,6 +651,7 @@ export default class Monitor extends React.Component {
                     placeholder='请选择一个待升级算法'
                     fluid
                     selection
+                    scrolling
                     text={(this.state.preUpgradeInfoAlgo >= 0) && (this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo)) ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
                   />
                 </Grid.Column>

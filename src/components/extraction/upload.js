@@ -46,10 +46,10 @@ export default class Uploader extends React.Component {
       <Menu fluid borderless>
         <Menu.Item position='right'>
           {/* <Icon name='file text' size='large' color='black' inverted /> */}
-          <Breadcrumb>
-            <Breadcrumb.Section >当前分析算法</Breadcrumb.Section>
+          <Breadcrumb as={Button} color='teal' basic >
+            <Breadcrumb.Section >执行算法</Breadcrumb.Section>
             <Breadcrumb.Divider icon='long arrow right' />
-            <Breadcrumb.Section >Jieba</Breadcrumb.Section>
+            <Breadcrumb.Section ><strong>&nbsp;&nbsp;{this.props.currentAlgo}</strong></Breadcrumb.Section>
           </Breadcrumb>
         </Menu.Item>
         <Menu.Item>

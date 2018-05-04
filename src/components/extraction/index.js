@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
+import request from 'superagent';
 import Uploader from './upload';
 import Result from './result';
 import Info from './info';
@@ -59,8 +60,18 @@ export default class Extraction extends React.Component {
           description: '',
           meta: '抽取数量: ',
         }
-      ]
+      ],
+      algo: ''
     };
+  }
+
+  componentWillMount() {
+    request
+      .get('http://202.120.40.69:12347/manage/status')
+      .then(res => {
+        const { text_calling } = res.body;
+        this.setState({ algo: text_calling });
+      })
   }
 
   getFile = res => {
@@ -79,10 +90,11 @@ export default class Extraction extends React.Component {
   }
 
   render() {
+    const currentAlgo = this.state.algo;
     return (
       <Grid>
         <Grid.Row>
-          <Uploader getfile={this.getFile} />
+          <Uploader currentAlgo={currentAlgo} getfile={this.getFile} />
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column>
