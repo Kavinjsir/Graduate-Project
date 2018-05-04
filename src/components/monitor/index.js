@@ -487,180 +487,178 @@ export default class Monitor extends React.Component {
         <br />
         <br />
         {/* <Segment.Group size='mini' horizontal>
-          <Segment textAlign='center' >{'邮件分类:' + this.state.selectedMailAlgo}</Segment>
-          <Segment textAlign='center' >{'信息抽取:' + this.state.selectedInfoAlgo}</Segment>
+          <Segment textAlign='center' >{'邮件:' + this.state.selectedMailAlgo}</Segment>
+          <Segment textAlign='center' >{'信息:' + this.state.selectedInfoAlgo}</Segment>
         </Segment.Group> */}
-        <Grid divided='vertically'>
-          <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法注册</div></Grid.Column>
-            <Grid.Column as={Grid} columns={2} width={15} >
+        <Grid className='algo-monitor' celled centered textAlign='center'>
+          <Grid.Row>
+          {/* 算法注册组件 */}
+          <Grid.Column as={Grid} columns={2} width={8} >
+            <Grid.Row columns={1} divided='vertically' centered>
+              <Grid.Column as={Message} width={8} positive textAlign='center'>算法注册</Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 邮件 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preMailAlgoStatus: e.currentTarget.id })}
+                  options={this.getMailAlgo('0')}
+                  placeholder='请选择一个待注册算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preMailAlgoStatus >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preMailAlgoStatus).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreMailAlgoStatus} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreMailAlgoStatus} /> </Grid.Column>
+            </Grid.Row >
 
-              <Grid.Row columns={3} divided='vertically' >
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 信息 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preInfoAlgoStatus: e.currentTarget.id })}
+                  options={this.getInfoAlgo('0')}
+                  placeholder='请选择一个待注册算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preInfoAlgoStatus >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preInfoAlgoStatus).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreInfoAlgoStatus} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreInfoAlgoStatus} /> </Grid.Column>
+            </Grid.Row >
 
-                <Grid.Column width={1} > 邮件分类 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preMailAlgoStatus: e.currentTarget.id })}
-                    options={this.getMailAlgo('0')}
-                    placeholder='请选择一个待注册算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preMailAlgoStatus >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preMailAlgoStatus).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreMailAlgoStatus} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreMailAlgoStatus} /> </Grid.Column>
-              </Grid.Row >
+          </Grid.Column>
 
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 信息抽取 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preInfoAlgoStatus: e.currentTarget.id })}
-                    options={this.getInfoAlgo('0')}
-                    placeholder='请选择一个待注册算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preInfoAlgoStatus >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preInfoAlgoStatus).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='注册' onClick={this.updatePreInfoAlgoStatus} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='注册' color='teal' basic onClick={this.updatePreInfoAlgoStatus} /> </Grid.Column>
-              </Grid.Row >
+          {/* 算法卸载组件 */}
+          <Grid.Column as={Grid} columns={2} width={8} >
+            <Grid.Row columns={1} divided='vertically' centered>
+              <Grid.Column as={Message} width={8} warning textAlign='center'>算法卸载</Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 邮件 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preDeleteMailAlgo: e.currentTarget.id })}
+                  options={this.getMailAlgo('1')}
+                  placeholder='请选择一个待卸载算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preDeleteMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preDeleteMailAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteMailAlgoStatus} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteMailAlgoStatus} /> </Grid.Column>
+            </Grid.Row >
 
-            </Grid.Column>
-          </Grid.Row >
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 信息 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preDeleteInfoAlgo: e.currentTarget.id })}
+                  options={this.getInfoAlgo('1')}
+                  placeholder='请选择一个待卸载算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preDeleteInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preDeleteInfoAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteInfoAlgoStatus} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteInfoAlgoStatus} /> </Grid.Column>
+            </Grid.Row >
+          </Grid.Column>
+          </Grid.Row>
 
-          {/**************************************************************************************/}
+          <Grid.Row>
+          {/* 算法调用组件 */}
+          <Grid.Column as={Grid} columns={2} width={8} >
+            <Grid.Row columns={1} divided='vertically' centered>
+              <Grid.Column as={Message} width={8} info textAlign='center'>算法调用</Grid.Column>
+            </Grid.Row>
 
-          <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法卸载</div></Grid.Column>
-            <Grid.Column as={Grid} columns={2} width={15} >
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 邮件 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preSelectMailAlgo: e.currentTarget.id })}
+                  options={this.getMailAlgo('1')}
+                  placeholder='请选择一个待调用算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preSelectMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preSelectMailAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedMailAlgo} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedMailAlgo} /> </Grid.Column>
+            </Grid.Row >
 
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 邮件分类 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preDeleteMailAlgo: e.currentTarget.id })}
-                    options={this.getMailAlgo('1')}
-                    placeholder='请选择一个待卸载算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preDeleteMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preDeleteMailAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteMailAlgoStatus} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteMailAlgoStatus} /> </Grid.Column>
-              </Grid.Row >
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 信息 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preSelectInfoAlgo: e.currentTarget.id })}
+                  options={this.getInfoAlgo('1')}
+                  placeholder='请选择一个待调用算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={this.state.preSelectInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preSelectInfoAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedInfoAlgo} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedInfoAlgo} /> </Grid.Column>
+            </Grid.Row >
 
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 信息抽取 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preDeleteInfoAlgo: e.currentTarget.id })}
-                    options={this.getInfoAlgo('1')}
-                    placeholder='请选择一个待卸载算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preDeleteInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preDeleteInfoAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='卸载' onClick={this.updateDeleteInfoAlgoStatus} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='卸载' color='teal' basic onClick={this.updateDeleteInfoAlgoStatus} /> </Grid.Column>
-              </Grid.Row >
+          </Grid.Column>
 
-            </Grid.Column>
-          </Grid.Row >
+          {/* 算法升级组件 */}
+          <Grid.Column as={Grid} columns={2} width={8} >
+            <Grid.Row columns={1} divided='vertically' centered>
+              <Grid.Column as={Message} width={8} negative textAlign='center'>算法升级</Grid.Column>
+            </Grid.Row>
 
-          {/**************************************************************************************/}
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 邮件 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preUpgradeMailAlgo: e.currentTarget.id })}
+                  options={this.getMailAlgo('1')}
+                  placeholder='请选择一个待升级算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={(this.state.preUpgradeMailAlgo >= 0) && (this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo)) ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeMailAlgo} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeMailAlgo} /> </Grid.Column>
+            </Grid.Row >
 
-          <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法调用</div></Grid.Column>
-            <Grid.Column as={Grid} columns={2} width={15} >
+            <Grid.Row columns={3} divided='vertically' centered >
+              <Grid.Column width={1} > 信息 </Grid.Column>
+              <Grid.Column width={5} >
+                <Dropdown
+                  onChange={e => this.setState({ preUpgradeInfoAlgo: e.currentTarget.id })}
+                  options={this.getInfoAlgo('1')}
+                  placeholder='请选择一个待升级算法'
+                  fluid
+                  selection
+                  scrolling
+                  text={(this.state.preUpgradeInfoAlgo >= 0) && (this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo)) ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
+                />
+              </Grid.Column>
+              {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeInfoAlgo} /> */}
+              <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeInfoAlgo} /> </Grid.Column>
+            </Grid.Row >
 
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 邮件分类 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preSelectMailAlgo: e.currentTarget.id })}
-                    options={this.getMailAlgo('1')}
-                    placeholder='请选择一个待调用算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preSelectMailAlgo >= 0 ? this.state.mailAlgoList.find(x => x.id === this.state.preSelectMailAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedMailAlgo} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedMailAlgo} /> </Grid.Column>
-              </Grid.Row >
-
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 信息抽取 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preSelectInfoAlgo: e.currentTarget.id })}
-                    options={this.getInfoAlgo('1')}
-                    placeholder='请选择一个待调用算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={this.state.preSelectInfoAlgo >= 0 ? this.state.infoAlgoList.find(x => x.id === this.state.preSelectInfoAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='调用' onClick={this.updateSelectedInfoAlgo} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='调用' color='teal' basic onClick={this.updateSelectedInfoAlgo} /> </Grid.Column>
-              </Grid.Row >
-
-            </Grid.Column>
-          </Grid.Row >
-
-          {/**************************************************************************************/}
-
-          <Grid.Row columns={2} textAlign='center'>
-            <Grid.Column as={Message} info width={1} secondary><div className='shuxiang'>算法升级</div></Grid.Column>
-            <Grid.Column as={Grid} columns={2} width={15} >
-
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 邮件分类 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preUpgradeMailAlgo: e.currentTarget.id })}
-                    options={this.getMailAlgo('1')}
-                    placeholder='请选择一个待升级算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={(this.state.preUpgradeMailAlgo >= 0) && (this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo)) ? this.state.mailAlgoList.find(x => x.id === this.state.preUpgradeMailAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeMailAlgo} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeMailAlgo} /> </Grid.Column>
-              </Grid.Row >
-
-              <Grid.Row columns={3} divided='vertically' >
-                <Grid.Column width={1} > 信息抽取 </Grid.Column>
-                <Grid.Column width={13} >
-                  <Dropdown
-                    onChange={e => this.setState({ preUpgradeInfoAlgo: e.currentTarget.id })}
-                    options={this.getInfoAlgo('1')}
-                    placeholder='请选择一个待升级算法'
-                    fluid
-                    selection
-                    scrolling
-                    text={(this.state.preUpgradeInfoAlgo >= 0) && (this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo)) ? this.state.infoAlgoList.find(x => x.id === this.state.preUpgradeInfoAlgo).text : null}
-                  />
-                </Grid.Column>
-                {/* <Grid.Column width={1} as={Button} content='升级' onClick={this.upgradeInfoAlgo} /> */}
-                <Grid.Column width={2} textAlign='left' > <Button content='升级' color='teal' basic onClick={this.upgradeInfoAlgo} /> </Grid.Column>
-              </Grid.Row >
-
-            </Grid.Column>
-          </Grid.Row >
+          </Grid.Column>
+          </Grid.Row>
         </Grid>
       </div>
     );
