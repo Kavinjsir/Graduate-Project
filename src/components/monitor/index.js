@@ -485,7 +485,7 @@ export default class Monitor extends React.Component {
     return (
       <div>
         <br />
-        <br />
+       {/*  <br /> */}
         {/* <Segment.Group size='mini' horizontal>
           <Segment textAlign='center' >{'邮件:' + this.state.selectedMailAlgo}</Segment>
           <Segment textAlign='center' >{'信息:' + this.state.selectedInfoAlgo}</Segment>
@@ -499,7 +499,7 @@ export default class Monitor extends React.Component {
             </Grid.Row>
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 邮件 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preMailAlgoStatus: e.currentTarget.id })}
                   options={this.getMailAlgo('0')}
@@ -516,7 +516,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 信息 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preInfoAlgoStatus: e.currentTarget.id })}
                   options={this.getInfoAlgo('0')}
@@ -540,7 +540,7 @@ export default class Monitor extends React.Component {
             </Grid.Row>
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 邮件 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preDeleteMailAlgo: e.currentTarget.id })}
                   options={this.getMailAlgo('1')}
@@ -557,7 +557,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 信息 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preDeleteInfoAlgo: e.currentTarget.id })}
                   options={this.getInfoAlgo('1')}
@@ -583,7 +583,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 邮件 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preSelectMailAlgo: e.currentTarget.id })}
                   options={this.getMailAlgo('1')}
@@ -600,7 +600,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 信息 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preSelectInfoAlgo: e.currentTarget.id })}
                   options={this.getInfoAlgo('1')}
@@ -625,7 +625,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 邮件 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preUpgradeMailAlgo: e.currentTarget.id })}
                   options={this.getMailAlgo('1')}
@@ -642,7 +642,7 @@ export default class Monitor extends React.Component {
 
             <Grid.Row columns={3} divided='vertically' centered >
               <Grid.Column width={1} > 信息 </Grid.Column>
-              <Grid.Column width={5} >
+              <Grid.Column width={6} >
                 <Dropdown
                   onChange={e => this.setState({ preUpgradeInfoAlgo: e.currentTarget.id })}
                   options={this.getInfoAlgo('1')}
