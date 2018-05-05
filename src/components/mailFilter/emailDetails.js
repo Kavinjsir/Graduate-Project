@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Button, Header, Divider } from 'semantic-ui-react';
-import { getPrettyDate, getPrettyTime } from '../utils/date';
+import { getPrettyDate, getPrettyTime } from '../../utils/date';
 
 export default class EmailDetails extends React.Component {
 

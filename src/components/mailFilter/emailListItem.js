@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Button } from 'semantic-ui-react';
-import { getPrettyDate } from '../utils/date';
+import { getPrettyDate } from '../../utils/date';
 
 export default class EmailListItem extends React.Component {
   render() {
