@@ -12,6 +12,9 @@
 
 # production
 /build
+/apptext.js
+/build.zip
+/server.zip
 
 # misc
 .DS_Store

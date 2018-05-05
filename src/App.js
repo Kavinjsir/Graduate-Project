@@ -10,8 +10,8 @@ import EmailList from './components/emailList';
 import EmailDetails from './components/emailDetails';
 import HomePage from './components/home';
 import Monitor from './components/monitor/index';
-import './Unify.css';
 import Extraction from './components/extraction';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -208,11 +208,8 @@ class App extends Component {
       <Router>
         <div>
           <div className='title'>
-            {/* <img alt='xiaohui' src='http://vi.sjtu.edu.cn/img/base/Logo.png' /> */}
             <img alt='logo' src='http://oyy735z2r.bkt.clouddn.com/logo1.png' />
             <div>{this.state.address}</div>
-            {/* <div className='proname'>邮件监管系统</div> */}
-            {/* <div className='logout'>登出</div> */}
           </div>
           <Grid className="menu-bar">
             <Grid.Column textAlign="center" width={2}>
