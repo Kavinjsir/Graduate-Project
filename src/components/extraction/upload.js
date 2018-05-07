@@ -52,7 +52,7 @@ export default class Uploader extends React.Component {
     const state = this.state.extractState;
     const name = this.state.name;
     return (
-      <div style={{ display: 'flex', width: '100%', justifyContent:'center', fontSize: '16px' }}>
+      <div style={{ display: 'flex', width: '100%', justifyContent:'center', fontSize: '16px', borderBottom: '1px ridge' }}>
         <div style={{color: '#18435A', cursor: 'pointer'}}>
           执行算法 --> {this.props.currentAlgo}
         </div>
@@ -63,7 +63,7 @@ export default class Uploader extends React.Component {
             {name}
             &nbsp;&nbsp;
           </label>
-          <div className="upload-button" onClick={this.handleSubmit}>&nbsp;&nbsp;上传&nbsp;&nbsp;</div>
+          <div className="upload-button" onClick={this.handleSubmit}>&nbsp;&nbsp;点击上传&nbsp;&nbsp;</div>
         </div>
         {state === 0 ? <div className="extraction-result" style={{color: 'teal'}}>状态：可以上传</div> :
           state === 1 ? <div className="extraction-result" style={{color: 'orange'}}>状态：正在分析</div> :
