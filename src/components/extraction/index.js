@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
 import request from 'superagent';
 import Uploader from './upload';
 import Result from './result';
@@ -92,19 +91,29 @@ export default class Extraction extends React.Component {
   render() {
     const currentAlgo = this.state.algo;
     return (
-      <Grid>
-        <Grid.Row>
+      // <div style={{display: 'flex', width: '100%', height: '93%'}}>
+      //   <div style={{width: '50%', height: '100%', backgroundColor: 'teal'}}>
+      //     <Result res={this.state.result} />
+      //   </div>
+      //   <div style={{width: '50%', height: '100%', backgroundColor: 'green'}}>
+      //     <Info items={this.state.items} />
+      //   </div>
+      // </div>
+
+      <div style={{width: '100%', height: '92%'}}>
+        <div style={{width: '100%', height: '5%'}}>
           <Uploader currentAlgo={currentAlgo} getfile={this.getFile} />
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column>
-          <Result res={this.state.result} />
-          </Grid.Column>
-          <Grid.Column>
+        </div>
+
+        <div style={{display: 'flex', width: '100%', height: '95%'}}>
+          <div style={{width: '50%', height: '100%'}}>
+            <Result res={this.state.result} />
+          </div>
+          <div style={{width: '50%', height: '100%'}}>
             <Info items={this.state.items} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+          </div>
+        </div>
+    </div>
     );
   }
 }
