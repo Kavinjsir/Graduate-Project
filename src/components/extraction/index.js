@@ -66,7 +66,7 @@ export default class Extraction extends React.Component {
 
   componentWillMount() {
     request
-      .get('http://202.120.40.69:12347/manage/status')
+      .get('http://localhost:12347/manage/status')
       .then(res => {
         const { text_calling } = res.body;
         this.setState({ algo: text_calling });

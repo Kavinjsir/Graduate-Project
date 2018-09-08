@@ -12,7 +12,7 @@ export default class LeftSideBar extends React.Component {
 
   componentWillMount() {
     request
-      .get('http://202.120.40.69:12347/manage/status')
+      .get('http://localhost:12347/manage/status')
       .then(res => {
         const { email_calling } = res.body;
         this.setState({ algo: email_calling });

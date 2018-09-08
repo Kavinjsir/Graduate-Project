@@ -39,7 +39,7 @@ class MailIndex extends Component {
     console.log(mailList);
     alert('正在进行邮件分类......');
     request
-      .post('http://202.120.40.69:12346/sendjson')
+      .post('http://localhost:12346/sendjson')
       .timeout({
         response: 20000,
         deadline: 30000

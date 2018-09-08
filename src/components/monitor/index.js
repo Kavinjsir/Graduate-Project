@@ -84,7 +84,7 @@ export default class Monitor extends React.Component {
 
   componentWillMount() {
     request
-      .get('http://202.120.40.69:12347/manage/status')
+      .get('http://localhost:12347/manage/status')
       .then(res => {
         console.log(res);
         const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
@@ -143,7 +143,7 @@ export default class Monitor extends React.Component {
 
   tick() {
     request
-      .get('http://202.120.40.69:12347/manage/status')
+      .get('http://localhost:12347/manage/status')
       .then(res => {
         console.log(res);
         const { email_calling, email_registered, email_unregistered, text_calling, text_registered, text_unregistered } = res.body;
@@ -223,7 +223,7 @@ export default class Monitor extends React.Component {
       type: 'email'
     };
     request
-      .post('http://202.120.40.69:12347/manage/register')
+      .post('http://localhost:12347/manage/register')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -260,7 +260,7 @@ export default class Monitor extends React.Component {
       type: 'email'
     };
     request
-      .post('http://202.120.40.69:12347/manage/unregister')
+      .post('http://localhost:12347/manage/unregister')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -293,7 +293,7 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-      .post('http://202.120.40.69:12347/manage/register')
+      .post('http://localhost:12347/manage/register')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -330,7 +330,7 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-      .post('http://202.120.40.69:12347/manage/unregister')
+      .post('http://localhost:12347/manage/unregister')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -367,7 +367,7 @@ export default class Monitor extends React.Component {
       type: 'email'
     };
     request
-      .post('http://202.120.40.69:12347/manage/calling')
+      .post('http://localhost:12347/manage/calling')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -397,7 +397,7 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-      .post('http://202.120.40.69:12347/manage/calling')
+      .post('http://localhost:12347/manage/calling')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -427,7 +427,7 @@ export default class Monitor extends React.Component {
       type: 'email'
     };
     request
-      .post('http://202.120.40.69:12347/manage/update')
+      .post('http://localhost:12347/manage/update')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {
@@ -462,7 +462,7 @@ export default class Monitor extends React.Component {
       type: 'text'
     };
     request
-      .post('http://202.120.40.69:12347/manage/update')
+      .post('http://localhost:12347/manage/update')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify(parameter))
       .then(res => {

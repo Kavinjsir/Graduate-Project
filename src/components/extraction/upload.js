@@ -27,7 +27,7 @@ export default class Uploader extends React.Component {
     console.log(file);
 
     request
-      .post('http://202.120.40.69:12347/text/extract')
+      .post('http://localhost:12347/text/extract')
       .send(formData)
       .end((err, res) => {
         if (err) {
