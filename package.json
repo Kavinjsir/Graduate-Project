@@ -14,7 +14,7 @@
     "koa-router": "^7.4.0",
     "koa2-cors": "^2.0.6",
     "mailparser": "^2.7.1",
-    "nodemailer": "^4.7.0",
+    "nodemailer": "^6.4.16",
     "nuka-carousel": "^4.5.8",
     "pg-promise": "^8.7.2",
     "react": "^16.8.6",
