@@ -22,7 +22,7 @@
     "react-redux": "^5.1.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^3.0.1",
-    "recharts": "^1.6.2",
+    "recharts": "^2.1.14",
     "redux": "^3.7.2",
     "request-promise": "^4.2.4",
     "semantic-ui-css": "^2.4.1",
